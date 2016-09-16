@@ -4,16 +4,16 @@
 // Together, they emulate an Integrated Development Environment (IDE) where users can edit, run and view their programs.
 
 // The button triggers the compilation when it is clicked so whenever the main HTML page loads, an EventListener is created in order to detect mouseclicks.
-// Also, ```textarea``` elements have read/write access by default so I turn on read-only mode for the output box whenever the page is loaded.
+// Also, ```textarea``` elements have read/write access by default so read-only mode is activated for the output box whenever the page is loaded.
 window.onload = function() 
 {
   btn = document.getElementById('submitArea');
-  btn.addEventListener('click', compile, false);
+  btn.addEventListener('click', compile);
 
   document.getElementById("outputArea").readOnly = true;
 }
 
-// This function processes the target code generated using the MICAELang input, and is called after compilation is finished. 
+// The next function prints the results of evaluating the target code generated using the MICAELang input, and is called after compilation is finished. 
 // The results of a compilation are posted on the right hand side of the browser (in the read-only textarea) as user output.
 var PROGNAME = "";
 
@@ -26,53 +26,54 @@ function stdout(RESULT)
   document.getElementById('outputArea').scrollTop = document.getElementById('outputArea').scrollHeight;
 }
 
-// The compilation sequence begins here. The parser, symbol and codegen modules are required from here. While not explicitly imported, the tokenize module
-// is crucial to compilation but is called from the parse module.
-var PARSER = require('./3_parser');
-var SYM = require('./4_symbol');
+// Due to the maximum stack call limits in client-side browser applications, the compilation steps have to be separated into smaller stages.
+// The compilation sequence begins here. While not explicitly imported, the tokenize module is crucial to compilation but is called from the parse module.
+var SYM = require('./2_symbol');
+var PARSER = require('./4_parser');
 var CODEGEN = require('./5_codegen');
 
-exports.compile = function() 
+var compile = function() 
 {
   obj = document.getElementById("input");
   var CODE = obj.value.toString().trim();
   if (CODE == '') { console.log("no"); return true;}
   
-// The ```ALL``` variable contains information about this system's state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
+// The ```ALL``` variable is a hash containing information about this system's state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
 // and error pertaining to the source code. It is passed from module to module so that the state is available at any time. If an error is thrown at any stage, the compilation
 // is aborted and an error is presented to the user.
-  ALL = PARSER.parse(CODE); 
+  var ALL = PARSER.parse(CODE); 
 
-// DELETE
   for(var key in ALL.ST)
   {
     str = "id: " + ALL.ST[key].identifier + " type: " + ALL.ST[key].type + " value: " + ALL.ST[key].value;
     console.log(str);
+    key ++;
   }
-
-  TMP = {"T":ALL.ST,"E":ALL.E};
-  l = SYM.lookup('PROGNAME',TMP);
+  
+  l = SYM.getValue('PROGNAME',ALL);
   PROGNAME = l == undefined ? "" : l;
-// DELETE 
-
 
   if (ALL.E != "")
   {
     stdout(ALL.E);
   }
 
-// The code generator only returns 2 entities in a record: a JavaScript code to be evaluated using built-in JS function ```eval``` and the error string.
+// The code generator only returns 2 entities in a record: an evaluation of generated JavaScript (using built-in JS function ```eval```) and the error string.
   else
   {
     OUTPUT = CODEGEN.generate(ALL);
     str = OUTPUT.E == "" ? OUTPUT.JS : OUTPUT.E;
-    stdout(eval(str));
+    stdout(str);
   }
+
+  return ALL;
 }
+
+exports.compile = compile;
 
 // As mentioned in the _Analysis_, Browserify adds some lines to the output code before each module so here is another one.
 
-},{"./3_parser":4,"./4_symbol":5,"./5_codegen":6}],2:[function(require,module,exports){
+},{"./2_symbol":3,"./4_parser":5,"./5_codegen":6}],2:[function(require,module,exports){
 // #### The MICAELang Grammar
 // Before moving on to the other modules, here is the MICAELang grammar explained. Not all of the productions defined here are compiled correctly as of now, but they are all
 // syntactically parse-able.
@@ -80,93 +81,223 @@ exports.compile = function()
 // ```LEX``` is a hash table that defines the tokens and regular expression patterns for the grammar's keywords.
 // There are only 3 data types accepted and they are inferred by the parser: Number, String and Boolean. Everything else that is not an operand or keyword is interpreted
 // as an identifier.
-var LEX = [];
-LEX['START'] = 			/\:D/;
-LEX['EOF'] = 				/\:\(/;
-LEX['PROGRAM'] = 		/^[A-Z]+([A-Za-z]*\d*)*/;
-LEX['ELSEIF'] = 		/\:\?\?/;
-LEX['IF'] = 				/\:\?/;
-LEX['ELSE'] = 			/\?/;
-LEX['LBRACKET'] = 	/\\_/;
-LEX['RBRACKET'] =		/_\//;
-LEX['PRINT'] = 			/!{3}/;
-LEX['AND'] = 				/<3/;
-LEX['OR'] = 				/\:\*/;
-LEX['FI'] = 				/\*/;
-LEX['EQ'] = 				/={2}/;
-LEX['IS'] = 				/={1}/;
-LEX['PLUS'] = 			/\+/;
-LEX['MINUS'] = 			/-/;
-LEX['MULT'] = 			/\*/;
-LEX['DIV'] = 				/\//;
-LEX['POW'] = 				/\^/;
-LEX['LT'] = 				/</;
-LEX['GT'] = 				/>/;
-LEX['NUMBER'] = 		/^\d*$/;
-LEX['STRING'] = 		/^".*"$/;
-LEX['BOOLEAN'] = 		/true|false/;
-LEX['COMMENT'] = 		/\#/;
-LEX['EOL'] = 				/\~/;
-LEX['IDENTIFIER'] =	/^[a-z]*([0-9]*[A-Za-z]*)*/;
-LEX['UNDEFINED'] = 	/.*/;
-
-exports.getLEX = function()
+var LEX = 
 {
-  return LEX;
-}
+'START':          /\:D/,
+'EOF':            /\:\(/,
+'PROGRAM':        /^[A-Z]+([A-Za-z]*\d*)*/,
+'ELSEIF':         /\:\?\?/,
+'IF':             /\:\?/,
+'ELSE':           /\?/,
+'LBRACKET':       /\\_/,
+'RBRACKET':       /_\//,
+'PRINT':          /\:O/,
+'AND':            /<3/,
+'OR':             /\:\*/,
+'FI':             /\*/,
+'EQ':             /={2}/,
+'IS':             /={1}/,
+'PLUS':           /\+/,
+'MINUS':          /-/,
+'MULT':           /\*/,
+'DIV':            /\//,
+'POW':            /\^/,
+'LT':             /</,
+'GT':             />/,
+'NUMBER':         /^\d*$/,
+'STRING':         /^".*"$/,
+'BOOLEAN':        /true|false/,
+'COMMENT':        /\#/,
+'EOL':            /\~/,
+'IDENTIFIER':     /^[a-z]*([0-9]*[A-Za-z]*)*/,
+'UNDEFINED':      /.*/
+};
+
+exports.LEX = LEX;
 
 // The ```RULES``` hash table contains key-value pairs containing the token and a list of acceptable right-hand side tokens.
 // The grammar is left-recursive which means that the operators or functions are on the left-hand side and the operands are on the right. The parser supports
 // unlimited operands, but they have to be of the same type.
-var RULES = [];
-RULES['NUMBER']=    ['NUMBER','EOL'];
-RULES['BOOLEAN']=   ['BOOLEAN','EOL'];
-RULES['STRING']=    ['STRING','EOL'];
-RULES['IDENTIFIER']=['IS','NUMBER','STRING','BOOLEAN','EOL'];
-RULES['PROGRAM']=   ['EOL'];
-RULES['PLUS']=      ['NUMBER','IDENTIFIER'];
-RULES['MINUS']=     ['NUMBER','IDENTIFIER'];
-RULES['MULT']=      ['NUMBER','IDENTIFIER'];
-RULES['DIV']=       ['NUMBER','IDENTIFIER'];
-RULES['POW']=       ['NUMBER','IDENTIFIER'];
-RULES['LT']=        ['NUMBER','IDENTIFIER'];
-RULES['GT']=        ['NUMBER','IDENTIFIER'];
-RULES['IS']=        ['NUMBER','STRING','BOOLEAN','IDENTIFIER','POW','MULT','DIV','PLUS','MINUS','LT','GT','AND','OR','EQ'];
-RULES['EQ']=        ['NUMBER','STRING','BOOLEAN','IDENTIFIER'];
-RULES['AND']=       ['BOOL','IDENTIFIER'];
-RULES['OR']=        ['BOOL','IDENTIFIER']; 
-RULES['PRINT']=     ['STRING','NUMBER','IDENTIFIER'];
-RULES['EOL']=       ['ELSEIF','IF','ELSE','FI','IDENTIFIER','PRINT','COMMENT','EOF'];
-RULES['START']=     ['PROGRAM'];
-RULES['EOF']=       [];
+var RULES =
+{
+'NUMBER':       ['NUMBER','EOL','EOF'],
+'BOOLEAN':      ['BOOLEAN','EOL','EOF'],
+'STRING':       ['STRING','EOL','EOF'],
+'IDENTIFIER':   ['IS','NUMBER','STRING','BOOLEAN','EOL'],
+'PROGRAM':      ['EOL','EOF'],
+'PLUS':         ['NUMBER','IDENTIFIER'],
+'MINUS':        ['NUMBER','IDENTIFIER'],
+'MULT':         ['NUMBER','IDENTIFIER'],
+'DIV':          ['NUMBER','IDENTIFIER'],
+'POW':          ['NUMBER','IDENTIFIER'],
+'LT':           ['NUMBER','IDENTIFIER'],
+'GT':           ['NUMBER','IDENTIFIER'],
+'IS':           ['NUMBER','STRING','BOOLEAN','IDENTIFIER','POW','MULT','DIV','PLUS','MINUS','LT','GT','AND','OR','EQ'],
+'EQ':           ['NUMBER','STRING','BOOLEAN','IDENTIFIER'],
+'AND':          ['BOOL','IDENTIFIER'],
+'OR':           ['BOOL','IDENTIFIER'], 
+'PRINT':        ['STRING','IDENTIFIER','BOOLEAN'],
+'EOL':          ['ELSEIF','IF','ELSE','FI','IDENTIFIER','PRINT','COMMENT'],
+'START':        ['PROGRAM'],
 
 // There are three syntax subdivisions which are also accessable as part of the rules: math operators, bool operators and expressions.
-RULES['OPERATORS'] =    ['POW','MULT','DIV','PLUS','MINUS'];
-RULES['BOOL_OPS'] =     ['LT','GT','AND','OR','EQ'];
-RULES['EXPRESSIONS'] =  ['NUMBER','STRING','BOOLEAN','IDENTIFIER'];
+'OPERATORS':    ['POW','MULT','DIV','PLUS','MINUS'],
+'BOOL_OPS':     ['LT','GT','AND','OR','EQ'],
+'EXPRESSIONS':  ['NUMBER','STRING','BOOLEAN','IDENTIFIER'],
 
 // The following rules for comments, parentheses, and conditionals are not implemented in the parsing yet. 
 // Although their syntax can be verified when used as input, the semantics are not interpretable by the parser as of now.
-RULES['COMMENT']=   ['ELSEIF','IF','ELSE','FI','STRING','COMMENT','EOL'];
-RULES['LBRACKET']=  ['NUMBER','STRING','BOOLEAN','IDENTIFIER','COMMENT'];
-RULES['RBRACKET']=  ['NUMBER','STRING','BOOLEAN','IDENTIFIER','COMMENT','EOL'];
-RULES['IF']=        ['BOOLEAN','IDENTIFIER','LT','GT','EQ','AND','OR','LBRACKET'];
-RULES['ELSEIF']=    ['BOOLEAN','IDENTIFIER','LT','GT','EQ','AND','OR','LBRACKET'];
-RULES['ELSE']=      ['POW','MULT','DIV','PLUS','MINUS','IF','PRINT','COMMENT','FI'];
-RULES['FI']=        ['EOL','COMMENT'];
+'COMMENT':      ['ELSEIF','IF','ELSE','FI','STRING','COMMENT','EOL'],
+'LBRACKET':     ['NUMBER','STRING','BOOLEAN','IDENTIFIER','COMMENT'],
+'RBRACKET':     ['NUMBER','STRING','BOOLEAN','IDENTIFIER','COMMENT','EOL'],
+'IF':           ['BOOLEAN','IDENTIFIER','LT','GT','EQ','AND','OR','LBRACKET'],
+'ELSEIF':       ['BOOLEAN','IDENTIFIER','LT','GT','EQ','AND','OR','LBRACKET'],
+'ELSE':         ['POW','MULT','DIV','PLUS','MINUS','IF','PRINT','COMMENT','FI'],
+'FI':           ['EOL','COMMENT']
+};
 
-exports.getRULES = function() {
-  return RULES;
-}
+exports.RULES = RULES;
 
 
 },{}],3:[function(require,module,exports){
+// <div style="page-break-after: always;"></div>
+
+// #### The Symbol Table ####
+// The ```symbol.js``` module defines a structure for containing the identifier, type, and value of variables (```IDENTIFIER```) in MICAELang. The actual table
+// is a hash table of identifiers and their associated ```SYMBOL``` objects as key-value pairs.
+
+// This module defines three methods
+// * ```lookup```
+// * ```update```
+// * ```insert```
+
+// During the tokenization and parsing of a program, this module maintains a symbol table containing 0 or more instances of ```SYMBOL```. The three methods
+// are designed such that duplicate symbols are not allowed in the language, and type mismatches cause a compilation error.
+
+// The SYMBOL object has three fields: type, identifier and value.
+var SYMBOL = function(t,i,v)
+{
+  this.type = t;
+  this.identifier = i;
+  this.value = v;
+}
+
+SYMBOL.prototype = {
+  doX : function () {}
+}
+
+exports.SYMBOL = SYMBOL;
+
+// The ```update``` function attempts to modify the value of an existing symbol table entry.
+// It returns the new status of the symbol table, and the ```ERROR``` string, which is empty unless there is a type mismatch.
+var update = function(SYM,ALL)
+{
+  i = SYM.identifier;  
+  if (ALL.ST[i] != undefined && (ALL.ST[i].type == SYM.type || ALL.ST[i].type == undefined))
+  {
+    eval("ALL.ST." + i + " = SYM");  
+  }
+  else
+  {
+    ALL.E = "ERROR: Type mismatch in inserting '" + SYM.identifier + "' into symbol table (" + ALL.ST[i].type + ")"
+  }
+  return ALL;
+}
+
+exports.update = update;
+
+// The ```insert``` function adds a new entry to the symbol table if it does not exist yet; otherwise, it tries to update the symbol associated with the identifier.
+// It returns an array containing the new status of the symbol table and the ```ERROR``` string. Note that if the identifier exists in the symbol table, the error
+// depends on the return value of the ```update``` function.
+var insert = function(SYM,ALL)
+{
+  i = SYM.identifier;
+  if (ALL.ST[i] == undefined)
+  {
+    console.log("insert")
+    ALL.ST.i = SYM;
+  }
+  else
+  {
+    ALL = update(SYM,ALL);
+  }
+  return ALL;
+}
+
+exports.insert = insert;
+
+// The following function returns the type of an identifier if it exists in the table, and returns undefined if lookup fails to find the entry.
+exports.getType = function(ID,ALL)
+{
+  if (isEmpty(ALL.ST))
+  {
+    return undefined;
+  }
+  for (var key in ALL.ST)
+  {
+    if (ALL.ST[key].identifier == ID)
+    {
+      return ALL.ST[key].type;
+    }
+  }
+  return undefined;
+}
+
+// The ```getValue``` function returns the current value of the identifier in the symbol table if it exists, and returns ```undefined``` otherwise.
+var getValue = function(ID,ALL)
+{
+  if (isEmpty(ALL.ST))
+  {
+    return undefined;
+  }
+  for (var key in ALL.ST)
+  {
+    if (ALL.ST[key].identifier == ID)
+    {
+      return ALL.ST[key].value;
+    }
+  }
+  return undefined;
+}
+
+exports.getValue = getValue;
+
+// The ```lookup``` function returns the index of the identifier in the symbol table if it exists, and returns ```undefined``` otherwise.
+var lookup = function(ID,ALL)
+{
+  if (isEmpty(ALL.ST))
+  {
+    return undefined;
+  }
+  for (var key in ALL.ST)
+  {
+    if (ALL.ST[key].identifier == ID)
+    {
+      return i;
+    }
+  }
+  return undefined;
+}
+
+exports.lookup = lookup;
+
+var isEmpty = function(object) {
+  for(var key in object) {
+    if(object.hasOwnProperty(key)){
+      return false;
+    }
+  }
+  return true;
+}
+
+exports.isEmpty = isEmpty;
+},{}],4:[function(require,module,exports){
 // #### STAGE 2: TOKENIZATION ####
 // Tokenization serves as an intermediate step of compilation in order to make parsing simpler. In this process, the raw input code is split into an array. The array contents
 // are assigned tokens according to the grammar rules and this will make it easier for the parser to check patterns later.
 
 var GRAMMAR = require('./1_grammar');
-var SYM = require('./4_symbol');
+var SYM = require('./2_symbol');
 
 // The ```tokenize``` function takes an array of strings as input and returns the state of the system.
 // This function scans every word in the ```CODE``` string and determines the appropriate token to represent it. The meaning behind the program is not meant to be
@@ -175,60 +306,67 @@ var SYM = require('./4_symbol');
 // Since this is the first compilation stage after I/O, the symbol table, tokenized code and error are initialized here.
 exports.tokenize = function(CODE)
 {
-  var TOKENS = GRAMMAR.getLEX();
-  var TOKENIZED_CODE = [];
-  var SYMBOL_TABLE = {"T" : [], "E" : ""};
-  var error = "";
+  var ALL = {"T":[],"W":[],"ST":{},"E":""};
+
+  var TOKENS = GRAMMAR.LEX;
 
 // When ```tokenize``` is invoked, CODE contains a string so it needs to be split by whitespace to form ```WORDS```, which is an array.
   CODE = CODE.replace(/(\r\n|\n|\r|\t)/gm," ");
   var WORDS = CODE.split(/ +/);
 
+  ALL.W = WORDS;
+
 // The regular expressions which are in the hash table ```TOKENS``` are tested against each element of ```WORD``` to determine which token fits best.
-  for (i = 0; i < WORDS.length; i ++) 
+  for (i = 0; i < ALL.W.length; i ++) 
   {
+    console.log(ALL.W.length);
     for (var key in TOKENS)
     {
       var re = new RegExp(TOKENS[key]);
-      if (re.exec(WORDS[i]) != null)
+      if (re.exec(ALL.W[i]) != null)
       {
 
-// JavaScript crashes if the word is not found in the hash table at all so the token ```UNDEFINED``` is assigned to those which do not fit anywhere else and an error is thrown.
+// The application crashes if the word is not found in the hash table at all so the token ```UNDEFINED``` is assigned to those which do not fit anywhere else and an error is thrown.
         if (key == 'UNDEFINED')
         {
-          error = "ERROR: '" + WORDS[i] + "' is unrecognized ";
-          return {"TOKENIZED" : TOKENIZED_CODE, "SYMBOLS" : SYMBOL_TABLE, "ERROR" : error};
+          ALL.E = "ERROR: '" + ALL.W[i] + "' is unrecognized ";
+          return ALL;
         }
         
-// If the word is an identifier or is the keyword ```START```, it needs to be recorded in the symbol table.
-        if (key == 'IDENTIFIER' || key == 'PROGRAM')
+// If the word is an identifier or is the program's name, it needs to be recorded in the symbol table.
+        if (key == 'PROGRAM')
         {
-           sym = (key == 'PROGRAM') ? new SYM.SYMBOL('PROGRAM','PROGNAME',WORDS[i]) : new SYM.SYMBOL(undefined,WORDS[i],undefined);
-           SYMBOL_TABLE = SYM.insert(sym,SYMBOL_TABLE);
-           error = SYMBOL_TABLE.E;
+          sym = new SYM.SYMBOL('PROGRAM','PROGNAME',ALL.W[i]);
+          ALL = SYM.insert(sym,ALL);
         }
-        TOKENIZED_CODE[i] = key;
-        break;
+        else if (key == 'IDENTIFIER')
+        {
+          sym = new SYM.SYMBOL(undefined,ALL.W[i],undefined);
+          ALL = SYM.insert(sym,ALL);
+        }
+        ALL.T[i] = key;
+        console.log(ALL.T);
+       // break;
       }
     }
   }
 
-// After scanning the code for tokens, the ```TOKENIZED_CODE```, ```WORDS``` and ```SYMBOL_TABLE``` arrays, and the ```ERROR``` string are returned to the
+// After scanning the code for tokens, the tokenized code and words arrays, symbol table hash, and the ```ERROR``` string are returned to the
 // parse function for further processing.
-  return {"T" : TOKENIZED_CODE, "W" : WORDS, "ST" : SYMBOL_TABLE.T, "E" : error};
+  return ALL;
 }
-},{"./1_grammar":2,"./4_symbol":5}],4:[function(require,module,exports){
+},{"./1_grammar":2,"./2_symbol":3}],5:[function(require,module,exports){
 // #### STAGE 3: PARSING ####
 // After tokenizing, the parser performs a few checks in order to verify that the source code is syntactically correct and is ready for code generation.
 // Since the grammar is left-recursive, the more commonly used recursive descent parsing method is not used here. Moreover, due to JavaScript stack call limits,
 // the initially planned one-pass parsing is not implemented here. Instead, there are 3 main functions executed within the main ```parse``` sequence
 // * ```checkSyntax```
 // * ```simplifyExpressions```
-// * ```simplifyBools```
+// * ```typeCheck```
 
-var TOKENIZER = require('./2_tokenizer');
 var GRAMMAR = require('./1_grammar');
-var SYM = require('./4_symbol');
+var SYM = require('./2_symbol');
+var TOKENIZER = require('./3_tokenizer');
 
 exports.parse = function(CODE) 
 { 
@@ -246,12 +384,12 @@ exports.parse = function(CODE)
 // to the main compilation sequence and abort the process.
   ALL = ALL.E == "" ? simplifyExpressions(ALL) : ALL;
 
-// The tokens, source code, symbol table and error are returned back to the compiler module. But really, the most important effect of this module is arguably
+// The tokens, source code, symbol table and error are returned back to the compiler module. But really, the arguably most important effect of this module is
 // the populated symbol table.
   return ALL;
 }
 
-// The ```checkSyntax``` function recursively checks the next token to see if the production ```<CURRENT,NEXT>``` are accepted by the grammar.
+// The ```checkSyntax``` function recursively checks the next token to see if the productions in the form of ```[CURRENT,NEXT]``` are accepted by the grammar.
 // It returns the state of the system upon completion. ```ALL.E``` would contain an error string if an illegal token is found.
 var checkSyntax = function(n,ALL)
 {
@@ -261,7 +399,7 @@ var checkSyntax = function(n,ALL)
   }
   else
   {
-    var G = GRAMMAR.getRULES();
+    var G = GRAMMAR.RULES;
     var NEXT = ALL.T[n];
     var CUR = ALL.T[n - 1];
 
@@ -277,11 +415,11 @@ var checkSyntax = function(n,ALL)
   return ALL;
 }
 
-// Mention typeCheck and apply
-// Populates and maintains the symbol table
+// The ```simplifyExpressions``` function looks for assignment statements involving Mathematical operations. It simplifies by processing constants
+// and storing the result in the symbol table.
 var simplifyExpressions = function(ALL)
 {
-  G = GRAMMAR.getRULES();
+  G = GRAMMAR.RULES;
   o = 0; n = 0;
   cur = ALL.T[n];
 
@@ -304,11 +442,12 @@ var simplifyExpressions = function(ALL)
         ALL.E = "ERROR: Incompatible types"
         break;
       }
-      type = ALL.T[6];
-      sym = new SYM.SYMBOL(type,ID,apply(OP,OPERANDS));
-      TMP = SYM.insert(sym,ALL.ST);
-      ALL.ST = TMP.T;
-      ALL.E = TMP.E;
+      
+      type = ALL.T[o];
+      value = apply(OP,OPERANDS);
+      sym = new SYM.SYMBOL(type,ID,value);
+      ALL = SYM.insert(sym,ALL);      
+      
       console.log("done");
     }
     n ++;
@@ -317,21 +456,8 @@ var simplifyExpressions = function(ALL)
   return ALL;
 }
 
-var apply = function(OP,OPERANDS)
-{
-  n = 0;
-  str = "";
-  ctr = 0;
-  l = OPERANDS.length;
-  while (n < l)
-  {
-    str = str.concat(OP,OPERANDS[n]);
-  }
-  
-  return eval(str);
-}
-
-// This function returns true if two expressions are of compatible types and false if they are not.
+// Given that unlimited number of operands are allowed in MICAELang, the type is checked before the data is passed on to the ```apply``` function for evaluation.
+// The ```typeCheck``` function returns true if all operands are of same types and false if they are not.
 var typeCheck = function(OPERANDS)
 {
   l = OPERANDS.length;
@@ -349,116 +475,64 @@ var typeCheck = function(OPERANDS)
   return true;
 }
 
-//
-},{"./1_grammar":2,"./2_tokenizer":3,"./4_symbol":5}],5:[function(require,module,exports){
-// #### The Symbol Table ####
-// The ```symbol.js``` module defines a structure for containing the identifier, type, and value of variables (```IDENTIFIER```) in MICAELang. The actual table
-// is a hash of key-value pairs of identifiers and their associated ```SYMBOL``` objects.
-
-// This module defines three methods
-// * ```lookup```
-// * ```update```
-// * ```insert```
-
-// During the tokenization and parsing of a program, this module maintains a symbols table containing 0 or more instances of ```SYMBOL```. The three methods
-// are designed such that duplicate symbols are not allowed in the language, and type mismatches cause a compilation error.
-
-// The SYMBOL object has three fields: type, identifier and value.
-var SYMBOL = function(t,i,v)
+// The ```apply``` function indirectly uses the principle of currying. The input is an operator and its list of operands. The function iterates through the
+// list until it reaches the end, and then computes the result. This is indirect currying because while intermediate values are not computed, the traversal
+// and formation of the evaluated string is similar to what happens in the method.
+var apply = function(OP,OPERANDS)
 {
-  this.type = t;
-  this.identifier = i;
-  this.value = v;
-}
-
-SYMBOL.prototype = {
-  doX : function () {}
-}
-
-exports.SYMBOL = SYMBOL;
-
-// The ```lookup``` function returns the current value of the identifier in the symbol table if it exists, and returns ```undefined``` otherwise.
-var lookup = function(ID,ALL)
-{
-  if (ALL.T = [])
+  n = 0;
+  str = "";
+  ctr = 0;
+  l = OPERANDS.length;
+  while (n < l)
   {
-    return undefined;
+    str = str.concat(OP,OPERANDS[n]);
   }
-  else if (ALL.T[ID] != undefined)
-  {
-    return ALL.T[ID].value;    
-  }
-  return undefined;
-}
-
-exports.lookup = lookup;
-
-// The ```update``` function attempts to modify the value of an existing symbol table entry.
-// It returns the new status of the symbol table, and the ```ERROR``` string, which is empty unless there is a type mismatch.
-var update = function(SYM,ALL)
-{
-  if (ALL.T[SYM.identifier].type == SYM.type)
-  {
-    ALL.T[SYM.identifier].value = SYM.value;
-    console.log ("Updated sym table");
-  }
-  else
-  {
-    ALL.E = "ERROR: Type mismatch in inserting '" + SYM.identifier + "' into symbol table"
-  }
-  return ALL;
-}
-
-exports.update = update;
-
-// The ```insert``` function adds a new entry to the symbol table if it does not exist yet; otherwise, it tries to update the symbol associated with the identifier.
-// It returns an array containing the new status of the symbol table and the ```ERROR``` string. Note that if the identifier exists in the symbol table, the error
-// depends on the return value of the ```update``` function.
-var insert = function(SYM,ALL)
-{
-  if (lookup(SYM.identifier,ALL.T) == undefined)
-  {
-    ALL.T[SYM.identifier] = SYM;
-    console.log("Inserted into symbol table");
-  }
-  else
-  {
-    console.log("New sym table entry");
-    ALL = update(SYM,TABLE);
-  }
-  return ALL;
-}
-
-exports.insert = insert;
-
-// The following function returns the type of an identifier if it exists in the table, and returns undefined if lookup fails to find the entry.
-exports.getType = function(ID,ALL)
-{
-  if (lookup(ID,ALL) != undefined)
-  {
-    return ALL.T[ID].type;    
-  }
-  return undefined;
+  
+  return eval(str);
 }
 //
-// ###  Code Generation
-//
-},{}],6:[function(require,module,exports){
+},{"./1_grammar":2,"./2_symbol":3,"./3_tokenizer":4}],6:[function(require,module,exports){
 // #### STAGE 4: CODE GENERATION ####
 
-var SYM = require('./4_symbol');
-var TOKENIZER = require('./2_tokenizer');
+// The last layer of compilation is code generation where symbol table values are substituted into expressions and function applications.
+// This module is simple because the grammar only has assignments, arithmetic operations and print statements. Moreover, most arithmetic
+// expressions are simplified in the parsing phase.
+
+// The ```generate``` function iterates through the list of tokens and uses ```eval``` to interpret the generated JavaScript code. The output is 
+// appended to a string value which is returned to the main compile module as program output.
+
+var SYM = require('./2_symbol');
+var TOKENIZER = require('./3_tokenizer');
 
 exports.generate = function(ALL) 
 { 
-// The productions that are allowed in the language is be defined by EXPRESSIONS.
+  console.log("CODEGEN:generate")
+  n = 0;
+  JS = "";
+  err = "";
 
-// return {"TOKENIZED" : TOKENIZED_CODE, "SYMBOLS" : SYMBOL_TABLE, "ERROR" : error};
-
-  WORDS = ALL.W;
+  while(ALL.T[n] != 'EOF')
+  {
+// MICAELang's print statement can only print strings so an error is thrown if a number or boolean value is passed in. If the argument to ```!!!``` (print)
+// is an identifier, the symbol table is looked up to find the value.
+    if(ALL.T[n] == 'PRINT')
+    {
+      t = n + 1; 
+      if(ALL.T[t] == 'STRING' || (ALL.T[t] == 'IDENTIFIER' && SYM.getTYPE(ALL.W,ALL.ST) == 'STRING'))
+      {
+        str = "\"" + ALL.W[t] + "\"";
+        JS += "\n" + eval(str);
+      }
+      else
+      {
+        err = "ERROR: Non-string token not recognized for stdout"; 
+        return {"JS":JS,"E":err};
+      }      
+    }
+  }
 
   JS = "\"hello\"";
-  return {"JS":JS, "E":""};
+  return {"JS":JS, "E":err};
 }
-//
-},{"./2_tokenizer":3,"./4_symbol":5}]},{},[1]);
+},{"./2_symbol":3,"./3_tokenizer":4}]},{},[1]);

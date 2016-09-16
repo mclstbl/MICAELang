@@ -1,13 +1,17 @@
-// This is a hack - copy bibtex format
+// <div style="page-break-after: always;"></div>
+// ### REFERENCES ###
 
-// This is [an example][id] reference-style link.
+// [1] Browserify. [http://browserify.org], March 2016.  
 
-// This is [an example](http://example.com/ "Title") inline link.
-// [@id]: http://example.com/  "Optional Title Here"
-//
+// [2] Docco. [https://jashkenas.github.io/docco], March 2016.
 
-// Sphere Research Labs. "What is Ideone". https://ideone.com/. March 3, 2016.
-// Emojipedia Pty Ltd. "FAQ". http://emojipedia.org/faq/. March 3, 2016.
-// Graham, Scott. Skulpt. http://www.skulpt.org/
-// Docco. https://jashkenas.github.io/docco/
-// Browserify. browserify.org
+// [3] FAQ. Emojipedia. [http://emojipedia.org/faq], March 2016.  
+
+// [4] Graham, Scott. Skulpt. [http://www.skulpt.org], April 2016.  
+
+// [5] JavaScript For Cats. [http://jsforcats.com], March 2016.  
+
+// [6] What is Ideone. [https://ideone.com/], March 2016. 
+
+// [7] What is Alice?. Alice. [http://www.alice.org/index.php?page=what_is_alice/what_is_alice], March 2016.
+

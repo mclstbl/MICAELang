@@ -4,18 +4,23 @@ body {
   line-height: 20px;
   color: #30404f;
   background-color: #F5F5FF;
-  margin: 5%; padding: 2% 2% 2% 2%;
+  margin: 5%; padding: 5% 5% 5% 5%;
   height:100%;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  margin-bottom: 5%;
 }
 
 pre, tt, code {
   font-family: Menlo, Consolas, Monaco, monospace;
   font-size: 19px
   display: inline-block;
-  border: 1px solid #EAEAEA;
+  border: none;
   background: #f8f8f8;
-  color: #555;
+  color: darkgreen;
   padding: 0 5px;
   line-height: 13px;
+}
+
+.fleur {
+  display:none;
 }

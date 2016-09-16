@@ -27,10 +27,10 @@
       
         
         <h3 id="introduction">Introduction</h3>
-<p>MICAELang is an esoteric context-free language which is compiled using JavaScript (to target language JavaScript) in the browser. The source language is comprised of emojis, numbers, 
-strings and mathematical/boolean operators. The compiler runs solely in the browser and was written in “vanilla” JavaScript, which means that no servers, external APIs 
-or frameworks were used. Due to the maximum
-stack call limits in client-side browser applications, the compilation steps had to be separated into smaller stages, which will be explained in this report.</p>
+<p>MICAELang is an esoteric context-free language which is compiled to JavaScript using the browser.
+The source language is comprised of emojis, numbers, strings and mathematical operators. The compiler runs solely in the browser and 
+was written in “vanilla” JavaScript, which means that no servers, external APIs 
+or frameworks were used. The source code can be found in <a href="https://github.com/mclstbl/MICAELang">https://github.com/mclstbl/MICAELang</a>.</p>
 
         
       
@@ -38,25 +38,27 @@ stack call limits in client-side browser applications, the compilation steps had
         <h3 id="problem">Problem</h3>
 <p>The creation of MICAELang was inspired by two current situations.
 First, there are a total of 845 emojis supported across all smartphone and computer platforms (Emojipedia), and each one has an associated meaning. These graphical characters
-are often used in messaging in order to communicate. Secondly, mainstream compilers require installation on a local computer; most online compilers such as Ideone connect to a 
-remote server on which the input code is compiled then return the results to the browser. The purpose of MICAELang is to create a language which can be parsed and executed purely within
-a browser.</p>
+are often used in messaging in order to communicate, but there are not many programming languages that utilize them. 
+Secondly, mainstream compilers require installation on a local computer; most popular online compilers such as Ideone connect to a 
+remote server on which the input code is compiled then return the results to the browser. 
+The purpose of MICAELang is to create an emoji and symbol-based language which can be parsed and executed purely within a browser.</p>
 
         
       
         
         <h3 id="history-and-background">History and Background</h3>
-<p>The MICAELang project’s purpose is to use esoteric programming concepts and perform a minimal amount of computation in the background so that compilation can run in the browser.
-A similar idea is implemented in Skulpt (Graham), which is an in-browser implementation of Python. The main selling point of Skulpt is the fact that it is compiled in the client
-side and so there is no risk of throttling a remote server, and that there is no installation required to use it. </p>
+<p>The MICAELang project’s purpose is to use emojis as keywords and minimize amount of computation in the background so that compilation can run in the browser.
+A similar idea is implemented in Skulpt, which is an in-browser implementation of Python. The main selling point of Skulpt is the fact that it is compiled on the client
+side so there is no risk of throttling a remote server, and also that there is no installation required to use it. </p>
 
         
       
         
         <p>The main differences between MICAELang and Skulpt are:</p>
 <ul>
-<li>The grammar is not as large as Python’s. MICAELang currently only supports Mathematical and Boolean expression assignments, and print statements.</li>
+<li>MICAELang currently only supports arithmetic expression assignments and print statements so the grammar is not very complex.</li>
 <li>MICAELang is context-free - the syntax of expressions are a bit different from Python because there is no support for parentheses.</li>
+<li>MICAELang uses symbols and emojis as keywords.</li>
 </ul>
 
         
@@ -70,7 +72,7 @@ runs on a web platform since most browsers are capable of running JavaScript; no
       
         
         <p>Initially, the project was designed to use meteor.js in order to use a preexisting parser generator called Jison. However, since the MICAELang grammar is very simple and writing
-a parser was not very complicated, external frameworks proved to be of no use. Instead, a tool called Browserify is utilized in the app’s build process in order to 
+a parser was not very complicated, external frameworks proved to be of little use. Instead, a tool called Browserify is utilized in the app’s build process in order to 
 bundle up all the smaller modules into one script which is loaded onto the HTML web interface. The most obvious effect of Browserify is the enablement of 
 the <code>require</code>, <code>module</code>, and <code>exports</code> keywords which typically do not run on the client side of a web application. </p>
 
@@ -108,20 +110,20 @@ Together, they emulate an Integrated Development Environment (IDE) where users c
       
         
         <p>The button triggers the compilation when it is clicked so whenever the main HTML page loads, an EventListener is created in order to detect mouseclicks.
-Also, <code>textarea</code> elements have read/write access by default so I turn on read-only mode for the output box whenever the page is loaded.</p>
+Also, <code>textarea</code> elements have read/write access by default so read-only mode is activated for the output box whenever the page is loaded.</p>
 
         
           <div class='highlight'><pre><span class="hljs-built_in">window</span>.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) 
 </span>{
   btn = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'submitArea'</span>);
-  btn.addEventListener(<span class="hljs-string">'click'</span>, compile, <span class="hljs-literal">false</span>);
+  btn.addEventListener(<span class="hljs-string">'click'</span>, compile);
 
   <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"outputArea"</span>).readOnly = <span class="hljs-literal">true</span>;
 }</pre></div>
         
       
         
-        <p>This function processes the target code generated using the MICAELang input, and is called after compilation is finished. 
+        <p>The next function prints the results of evaluating the target code generated using the MICAELang input, and is called after compilation is finished. 
 The results of a compilation are posted on the right hand side of the browser (in the read-only textarea) as user output.</p>
 
         
@@ -138,15 +140,15 @@ The results of a compilation are posted on the right hand side of the browser (i
         
       
         
-        <p>The compilation sequence begins here. The parser, symbol and codegen modules are required from here. While not explicitly imported, the tokenize module
-is crucial to compilation but is called from the parse module.</p>
+        <p>Due to the maximum stack call limits in client-side browser applications, the compilation steps have to be separated into smaller stages.
+The compilation sequence begins here. While not explicitly imported, the tokenize module is crucial to compilation but is called from the parse module.</p>
 
         
           <div class='highlight'><pre><span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);
 <span class="hljs-keyword">var</span> PARSER = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./4_parser'</span>);
 <span class="hljs-keyword">var</span> CODEGEN = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./5_codegen'</span>);
 
-exports.compile = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) 
+<span class="hljs-keyword">var</span> compile = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) 
 </span>{
   obj = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"input"</span>);
   <span class="hljs-keyword">var</span> CODE = obj.value.toString().trim();
@@ -154,34 +156,22 @@ exports.compile = <span class="hljs-function"><span class="hljs-keyword">functio
         
       
         
-        <p>The <code>ALL</code> variable contains information about this system’s state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
+        <p>The <code>ALL</code> variable is a hash containing information about this system’s state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
 and error pertaining to the source code. It is passed from module to module so that the state is available at any time. If an error is thrown at any stage, the compilation
 is aborted and an error is presented to the user.</p>
 
         
-          <div class='highlight'><pre>  ALL = PARSER.parse(CODE);</pre></div>
-        
-      
-        
-        <p>DELETE</p>
+          <div class='highlight'><pre>  <span class="hljs-keyword">var</span> ALL = PARSER.parse(CODE); 
 
-        
-          <div class='highlight'><pre>  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> ALL.ST)
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> ALL.ST)
   {
     str = <span class="hljs-string">"id: "</span> + ALL.ST[key].identifier + <span class="hljs-string">" type: "</span> + ALL.ST[key].type + <span class="hljs-string">" value: "</span> + ALL.ST[key].value;
     <span class="hljs-built_in">console</span>.log(str);
+    key ++;
   }
-
-  TMP = {<span class="hljs-string">"T"</span>:ALL.ST,<span class="hljs-string">"E"</span>:ALL.E};
-  l = SYM.lookup(<span class="hljs-string">'PROGNAME'</span>,TMP);
-  PROGNAME = l == <span class="hljs-literal">undefined</span> ? <span class="hljs-string">""</span> : l;</pre></div>
-        
-      
-        
-        <p>DELETE </p>
-
-        
-          <div class='highlight'><pre>
+  
+  l = SYM.getValue(<span class="hljs-string">'PROGNAME'</span>,ALL);
+  PROGNAME = l == <span class="hljs-literal">undefined</span> ? <span class="hljs-string">""</span> : l;
 
   <span class="hljs-keyword">if</span> (ALL.E != <span class="hljs-string">""</span>)
   {
@@ -190,16 +180,20 @@ is aborted and an error is presented to the user.</p>
         
       
         
-        <p>The code generator only returns 2 entities in a record: a JavaScript code to be evaluated using built-in JS function <code>eval</code> and the error string.</p>
+        <p>The code generator only returns 2 entities in a record: an evaluation of generated JavaScript (using built-in JS function <code>eval</code>) and the error string.</p>
 
         
           <div class='highlight'><pre>  <span class="hljs-keyword">else</span>
   {
     OUTPUT = CODEGEN.generate(ALL);
     str = OUTPUT.E == <span class="hljs-string">""</span> ? OUTPUT.JS : OUTPUT.E;
-    stdout(<span class="hljs-built_in">eval</span>(str));
+    stdout(str);
   }
-}</pre></div>
+
+  <span class="hljs-keyword">return</span> ALL;
+}
+
+exports.compile = compile;</pre></div>
         
       
         
@@ -223,40 +217,39 @@ There are only 3 data types accepted and they are inferred by the parser: Number
 as an identifier.</p>
 
         
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> LEX = [];
-LEX[<span class="hljs-string">'START'</span>] = 			<span class="hljs-regexp">/\:D/</span>;
-LEX[<span class="hljs-string">'EOF'</span>] = 				<span class="hljs-regexp">/\:\(/</span>;
-LEX[<span class="hljs-string">'PROGRAM'</span>] = 		<span class="hljs-regexp">/^[A-Z]+([A-Za-z]*\d*)*/</span>;
-LEX[<span class="hljs-string">'ELSEIF'</span>] = 		<span class="hljs-regexp">/\:\?\?/</span>;
-LEX[<span class="hljs-string">'IF'</span>] = 				<span class="hljs-regexp">/\:\?/</span>;
-LEX[<span class="hljs-string">'ELSE'</span>] = 			<span class="hljs-regexp">/\?/</span>;
-LEX[<span class="hljs-string">'LBRACKET'</span>] = 	<span class="hljs-regexp">/\\_/</span>;
-LEX[<span class="hljs-string">'RBRACKET'</span>] =		<span class="hljs-regexp">/_\//</span>;
-LEX[<span class="hljs-string">'PRINT'</span>] = 			<span class="hljs-regexp">/!{3}/</span>;
-LEX[<span class="hljs-string">'AND'</span>] = 				<span class="hljs-regexp">/&lt;3/</span>;
-LEX[<span class="hljs-string">'OR'</span>] = 				<span class="hljs-regexp">/\:\*/</span>;
-LEX[<span class="hljs-string">'FI'</span>] = 				<span class="hljs-regexp">/\*/</span>;
-LEX[<span class="hljs-string">'EQ'</span>] = 				<span class="hljs-regexp">/={2}/</span>;
-LEX[<span class="hljs-string">'IS'</span>] = 				<span class="hljs-regexp">/={1}/</span>;
-LEX[<span class="hljs-string">'PLUS'</span>] = 			<span class="hljs-regexp">/\+/</span>;
-LEX[<span class="hljs-string">'MINUS'</span>] = 			<span class="hljs-regexp">/-/</span>;
-LEX[<span class="hljs-string">'MULT'</span>] = 			<span class="hljs-regexp">/\*/</span>;
-LEX[<span class="hljs-string">'DIV'</span>] = 				<span class="hljs-regexp">/\//</span>;
-LEX[<span class="hljs-string">'POW'</span>] = 				<span class="hljs-regexp">/\^/</span>;
-LEX[<span class="hljs-string">'LT'</span>] = 				<span class="hljs-regexp">/&lt;/</span>;
-LEX[<span class="hljs-string">'GT'</span>] = 				<span class="hljs-regexp">/&gt;/</span>;
-LEX[<span class="hljs-string">'NUMBER'</span>] = 		<span class="hljs-regexp">/^\d*$/</span>;
-LEX[<span class="hljs-string">'STRING'</span>] = 		<span class="hljs-regexp">/^".*"$/</span>;
-LEX[<span class="hljs-string">'BOOLEAN'</span>] = 		<span class="hljs-regexp">/true|false/</span>;
-LEX[<span class="hljs-string">'COMMENT'</span>] = 		<span class="hljs-regexp">/\#/</span>;
-LEX[<span class="hljs-string">'EOL'</span>] = 				<span class="hljs-regexp">/\~/</span>;
-LEX[<span class="hljs-string">'IDENTIFIER'</span>] =	<span class="hljs-regexp">/^[a-z]*([0-9]*[A-Za-z]*)*/</span>;
-LEX[<span class="hljs-string">'UNDEFINED'</span>] = 	<span class="hljs-regexp">/.*/</span>;
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> LEX = 
+{
+<span class="hljs-string">'START'</span>:          <span class="hljs-regexp">/\:D/</span>,
+<span class="hljs-string">'EOF'</span>:            <span class="hljs-regexp">/\:\(/</span>,
+<span class="hljs-string">'PROGRAM'</span>:        <span class="hljs-regexp">/^[A-Z]+([A-Za-z]*\d*)*/</span>,
+<span class="hljs-string">'ELSEIF'</span>:         <span class="hljs-regexp">/\:\?\?/</span>,
+<span class="hljs-string">'IF'</span>:             <span class="hljs-regexp">/\:\?/</span>,
+<span class="hljs-string">'ELSE'</span>:           <span class="hljs-regexp">/\?/</span>,
+<span class="hljs-string">'LBRACKET'</span>:       <span class="hljs-regexp">/\\_/</span>,
+<span class="hljs-string">'RBRACKET'</span>:       <span class="hljs-regexp">/_\//</span>,
+<span class="hljs-string">'PRINT'</span>:          <span class="hljs-regexp">/\:O/</span>,
+<span class="hljs-string">'AND'</span>:            <span class="hljs-regexp">/&lt;3/</span>,
+<span class="hljs-string">'OR'</span>:             <span class="hljs-regexp">/\:\*/</span>,
+<span class="hljs-string">'FI'</span>:             <span class="hljs-regexp">/\*/</span>,
+<span class="hljs-string">'EQ'</span>:             <span class="hljs-regexp">/={2}/</span>,
+<span class="hljs-string">'IS'</span>:             <span class="hljs-regexp">/={1}/</span>,
+<span class="hljs-string">'PLUS'</span>:           <span class="hljs-regexp">/\+/</span>,
+<span class="hljs-string">'MINUS'</span>:          <span class="hljs-regexp">/-/</span>,
+<span class="hljs-string">'MULT'</span>:           <span class="hljs-regexp">/\*/</span>,
+<span class="hljs-string">'DIV'</span>:            <span class="hljs-regexp">/\//</span>,
+<span class="hljs-string">'POW'</span>:            <span class="hljs-regexp">/\^/</span>,
+<span class="hljs-string">'LT'</span>:             <span class="hljs-regexp">/&lt;/</span>,
+<span class="hljs-string">'GT'</span>:             <span class="hljs-regexp">/&gt;/</span>,
+<span class="hljs-string">'NUMBER'</span>:         <span class="hljs-regexp">/^\d*$/</span>,
+<span class="hljs-string">'STRING'</span>:         <span class="hljs-regexp">/^".*"$/</span>,
+<span class="hljs-string">'BOOLEAN'</span>:        <span class="hljs-regexp">/true|false/</span>,
+<span class="hljs-string">'COMMENT'</span>:        <span class="hljs-regexp">/\#/</span>,
+<span class="hljs-string">'EOL'</span>:            <span class="hljs-regexp">/\~/</span>,
+<span class="hljs-string">'IDENTIFIER'</span>:     <span class="hljs-regexp">/^[a-z]*([0-9]*[A-Za-z]*)*/</span>,
+<span class="hljs-string">'UNDEFINED'</span>:      <span class="hljs-regexp">/.*/</span>
+};
 
-exports.getLEX = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)
-</span>{
-  <span class="hljs-keyword">return</span> LEX;
-}</pre></div>
+exports.LEX = LEX;</pre></div>
         
       
         
@@ -265,36 +258,36 @@ The grammar is left-recursive which means that the operators or functions are on
 unlimited operands, but they have to be of the same type.</p>
 
         
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> RULES = [];
-RULES[<span class="hljs-string">'NUMBER'</span>]=    [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'EOL'</span>];
-RULES[<span class="hljs-string">'BOOLEAN'</span>]=   [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'EOL'</span>];
-RULES[<span class="hljs-string">'STRING'</span>]=    [<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'EOL'</span>];
-RULES[<span class="hljs-string">'IDENTIFIER'</span>]=[<span class="hljs-string">'IS'</span>,<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'EOL'</span>];
-RULES[<span class="hljs-string">'PROGRAM'</span>]=   [<span class="hljs-string">'EOL'</span>];
-RULES[<span class="hljs-string">'PLUS'</span>]=      [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'MINUS'</span>]=     [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'MULT'</span>]=      [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'DIV'</span>]=       [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'POW'</span>]=       [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'LT'</span>]=        [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'GT'</span>]=        [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'IS'</span>]=        [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>,<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'EQ'</span>];
-RULES[<span class="hljs-string">'EQ'</span>]=        [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'AND'</span>]=       [<span class="hljs-string">'BOOL'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'OR'</span>]=        [<span class="hljs-string">'BOOL'</span>,<span class="hljs-string">'IDENTIFIER'</span>]; 
-RULES[<span class="hljs-string">'PRINT'</span>]=     [<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>];
-RULES[<span class="hljs-string">'EOL'</span>]=       [<span class="hljs-string">'ELSEIF'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'ELSE'</span>,<span class="hljs-string">'FI'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'PRINT'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOF'</span>];
-RULES[<span class="hljs-string">'START'</span>]=     [<span class="hljs-string">'PROGRAM'</span>];
-RULES[<span class="hljs-string">'EOF'</span>]=       [];</pre></div>
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> RULES =
+{
+<span class="hljs-string">'NUMBER'</span>:       [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'EOF'</span>],
+<span class="hljs-string">'BOOLEAN'</span>:      [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'EOF'</span>],
+<span class="hljs-string">'STRING'</span>:       [<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'EOF'</span>],
+<span class="hljs-string">'IDENTIFIER'</span>:   [<span class="hljs-string">'IS'</span>,<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'EOL'</span>],
+<span class="hljs-string">'PROGRAM'</span>:      [<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'EOF'</span>],
+<span class="hljs-string">'PLUS'</span>:         [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'MINUS'</span>:        [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'MULT'</span>:         [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'DIV'</span>:          [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'POW'</span>:          [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'LT'</span>:           [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'GT'</span>:           [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'IS'</span>:           [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>,<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'EQ'</span>],
+<span class="hljs-string">'EQ'</span>:           [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'AND'</span>:          [<span class="hljs-string">'BOOL'</span>,<span class="hljs-string">'IDENTIFIER'</span>],
+<span class="hljs-string">'OR'</span>:           [<span class="hljs-string">'BOOL'</span>,<span class="hljs-string">'IDENTIFIER'</span>], 
+<span class="hljs-string">'PRINT'</span>:        [<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'BOOLEAN'</span>],
+<span class="hljs-string">'EOL'</span>:          [<span class="hljs-string">'ELSEIF'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'ELSE'</span>,<span class="hljs-string">'FI'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'PRINT'</span>,<span class="hljs-string">'COMMENT'</span>],
+<span class="hljs-string">'START'</span>:        [<span class="hljs-string">'PROGRAM'</span>],</pre></div>
         
       
         
         <p>There are three syntax subdivisions which are also accessable as part of the rules: math operators, bool operators and expressions.</p>
 
         
-          <div class='highlight'><pre>RULES[<span class="hljs-string">'OPERATORS'</span>] =    [<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>];
-RULES[<span class="hljs-string">'BOOL_OPS'</span>] =     [<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'EQ'</span>];
-RULES[<span class="hljs-string">'EXPRESSIONS'</span>] =  [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>];</pre></div>
+          <div class='highlight'><pre><span class="hljs-string">'OPERATORS'</span>:    [<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>],
+<span class="hljs-string">'BOOL_OPS'</span>:     [<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'EQ'</span>],
+<span class="hljs-string">'EXPRESSIONS'</span>:  [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>],</pre></div>
         
       
         
@@ -302,26 +295,30 @@ RULES[<span class="hljs-string">'EXPRESSIONS'</span>] =  [<span class="hljs-stri
 Although their syntax can be verified when used as input, the semantics are not interpretable by the parser as of now.</p>
 
         
-          <div class='highlight'><pre>RULES[<span class="hljs-string">'COMMENT'</span>]=   [<span class="hljs-string">'ELSEIF'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'ELSE'</span>,<span class="hljs-string">'FI'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOL'</span>];
-RULES[<span class="hljs-string">'LBRACKET'</span>]=  [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'COMMENT'</span>];
-RULES[<span class="hljs-string">'RBRACKET'</span>]=  [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOL'</span>];
-RULES[<span class="hljs-string">'IF'</span>]=        [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'EQ'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'LBRACKET'</span>];
-RULES[<span class="hljs-string">'ELSEIF'</span>]=    [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'EQ'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'LBRACKET'</span>];
-RULES[<span class="hljs-string">'ELSE'</span>]=      [<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'PRINT'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'FI'</span>];
-RULES[<span class="hljs-string">'FI'</span>]=        [<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'COMMENT'</span>];
+          <div class='highlight'><pre><span class="hljs-string">'COMMENT'</span>:      [<span class="hljs-string">'ELSEIF'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'ELSE'</span>,<span class="hljs-string">'FI'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOL'</span>],
+<span class="hljs-string">'LBRACKET'</span>:     [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'COMMENT'</span>],
+<span class="hljs-string">'RBRACKET'</span>:     [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOL'</span>],
+<span class="hljs-string">'IF'</span>:           [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'EQ'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'LBRACKET'</span>],
+<span class="hljs-string">'ELSEIF'</span>:       [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'EQ'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'LBRACKET'</span>],
+<span class="hljs-string">'ELSE'</span>:         [<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'PRINT'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'FI'</span>],
+<span class="hljs-string">'FI'</span>:           [<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'COMMENT'</span>]
+};
 
-exports.getRULES = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-  <span class="hljs-keyword">return</span> RULES;
-}
+exports.RULES = RULES;
 
 
 },{}],<span class="hljs-number">3</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
         
       
         
+        <div style="page-break-after: always;"></div>
+
+        
+      
+        
         <h4 id="the-symbol-table">The Symbol Table</h4>
 <p>The <code>symbol.js</code> module defines a structure for containing the identifier, type, and value of variables (<code>IDENTIFIER</code>) in MICAELang. The actual table
-is a hash of key-value pairs of identifiers and their associated <code>SYMBOL</code> objects.</p>
+is a hash table of identifiers and their associated <code>SYMBOL</code> objects as key-value pairs.</p>
 
         
       
@@ -336,7 +333,7 @@ is a hash of key-value pairs of identifiers and their associated <code>SYMBOL</c
         
       
         
-        <p>During the tokenization and parsing of a program, this module maintains a symbols table containing 0 or more instances of <code>SYMBOL</code>. The three methods
+        <p>During the tokenization and parsing of a program, this module maintains a symbol table containing 0 or more instances of <code>SYMBOL</code>. The three methods
 are designed such that duplicate symbols are not allowed in the language, and type mismatches cause a compilation error.</p>
 
         
@@ -360,40 +357,20 @@ exports.SYMBOL = SYMBOL;</pre></div>
         
       
         
-        <p>The <code>lookup</code> function returns the current value of the identifier in the symbol table if it exists, and returns <code>undefined</code> otherwise.</p>
-
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> lookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
-</span>{
-  <span class="hljs-keyword">if</span> (ALL.T = [])
-  {
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
-  }
-  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ALL.T[ID] != <span class="hljs-literal">undefined</span>)
-  {
-    <span class="hljs-keyword">return</span> ALL.T[ID].value;    
-  }
-  <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
-}
-
-exports.lookup = lookup;</pre></div>
-        
-      
-        
         <p>The <code>update</code> function attempts to modify the value of an existing symbol table entry.
 It returns the new status of the symbol table, and the <code>ERROR</code> string, which is empty unless there is a type mismatch.</p>
 
         
           <div class='highlight'><pre><span class="hljs-keyword">var</span> update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">SYM,ALL</span>)
 </span>{
-  <span class="hljs-keyword">if</span> (ALL.T[SYM.identifier].type == SYM.type)
+  i = SYM.identifier;  
+  <span class="hljs-keyword">if</span> (ALL.ST[i] != <span class="hljs-literal">undefined</span> &amp;&amp; (ALL.ST[i].type == SYM.type || ALL.ST[i].type == <span class="hljs-literal">undefined</span>))
   {
-    ALL.T[SYM.identifier].value = SYM.value;
-    <span class="hljs-built_in">console</span>.log (<span class="hljs-string">"Updated sym table"</span>);
+    <span class="hljs-built_in">eval</span>(<span class="hljs-string">"ALL.ST."</span> + i + <span class="hljs-string">" = SYM"</span>);  
   }
   <span class="hljs-keyword">else</span>
   {
-    ALL.E = <span class="hljs-string">"ERROR: Type mismatch in inserting '"</span> + SYM.identifier + <span class="hljs-string">"' into symbol table"</span>
+    ALL.E = <span class="hljs-string">"ERROR: Type mismatch in inserting '"</span> + SYM.identifier + <span class="hljs-string">"' into symbol table ("</span> + ALL.ST[i].type + <span class="hljs-string">")"</span>
   }
   <span class="hljs-keyword">return</span> ALL;
 }
@@ -409,15 +386,15 @@ depends on the return value of the <code>update</code> function.</p>
         
           <div class='highlight'><pre><span class="hljs-keyword">var</span> insert = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">SYM,ALL</span>)
 </span>{
-  <span class="hljs-keyword">if</span> (lookup(SYM.identifier,ALL.T) == <span class="hljs-literal">undefined</span>)
+  i = SYM.identifier;
+  <span class="hljs-keyword">if</span> (ALL.ST[<span class="hljs-built_in">eval</span>(i)] == <span class="hljs-literal">undefined</span>)
   {
-    ALL.T[SYM.identifier] = SYM;
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Inserted into symbol table"</span>);
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"insert"</span>)
+    <span class="hljs-built_in">eval</span>(<span class="hljs-string">"ALL.ST."</span> + i + <span class="hljs-string">" = SYM"</span>);
   }
   <span class="hljs-keyword">else</span>
   {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"New sym table entry"</span>);
-    ALL = update(SYM,TABLE);
+    ALL = update(SYM,ALL);
   }
   <span class="hljs-keyword">return</span> ALL;
 }
@@ -431,12 +408,76 @@ exports.insert = insert;</pre></div>
         
           <div class='highlight'><pre>exports.getType = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
 </span>{
-  <span class="hljs-keyword">if</span> (lookup(ID,ALL) != <span class="hljs-literal">undefined</span>)
+  <span class="hljs-keyword">if</span> (isEmpty(ALL.ST))
   {
-    <span class="hljs-keyword">return</span> ALL.T[ID].type;    
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  }
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> ALL.ST)
+  {
+    <span class="hljs-keyword">if</span> (ALL.ST[key].identifier == ID)
+    {
+      <span class="hljs-keyword">return</span> ALL.ST[key].type;
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+}</pre></div>
+        
+      
+        
+        <p>The <code>getValue</code> function returns the current value of the identifier in the symbol table if it exists, and returns <code>undefined</code> otherwise.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
+</span>{
+  <span class="hljs-keyword">if</span> (isEmpty(ALL.ST))
+  {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  }
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> ALL.ST)
+  {
+    <span class="hljs-keyword">if</span> (ALL.ST[key].identifier == ID)
+    {
+      <span class="hljs-keyword">return</span> ALL.ST[key].value;
+    }
   }
   <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
 }
+
+exports.getValue = getValue;</pre></div>
+        
+      
+        
+        <p>The <code>lookup</code> function returns the index of the identifier in the symbol table if it exists, and returns <code>undefined</code> otherwise.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> lookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
+</span>{
+  <span class="hljs-keyword">if</span> (isEmpty(ALL.ST))
+  {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+  }
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> ALL.ST)
+  {
+    <span class="hljs-keyword">if</span> (ALL.ST[key].identifier == ID)
+    {
+      <span class="hljs-keyword">return</span> i;
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
+}
+
+exports.lookup = lookup;
+
+<span class="hljs-keyword">var</span> isEmpty = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">object</span>) </span>{
+  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> object) {
+    <span class="hljs-keyword">if</span>(object.hasOwnProperty(key)){
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+exports.isEmpty = isEmpty;
 },{}],<span class="hljs-number">4</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
         
       
@@ -464,10 +505,9 @@ interpreted at this point. Instead, individual words (strings) are checked to se
         
           <div class='highlight'><pre>exports.tokenize = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">CODE</span>)
 </span>{
-  <span class="hljs-keyword">var</span> TOKENS = GRAMMAR.getLEX();
-  <span class="hljs-keyword">var</span> TOKENIZED_CODE = [];
-  <span class="hljs-keyword">var</span> SYMBOL_TABLE = {<span class="hljs-string">"T"</span> : [], <span class="hljs-string">"E"</span> : <span class="hljs-string">""</span>};
-  <span class="hljs-keyword">var</span> error = <span class="hljs-string">""</span>;</pre></div>
+  <span class="hljs-keyword">var</span> ALL = {<span class="hljs-string">"T"</span>:[],<span class="hljs-string">"W"</span>:[],<span class="hljs-string">"ST"</span>:{},<span class="hljs-string">"E"</span>:<span class="hljs-string">""</span>};
+
+  <span class="hljs-keyword">var</span> TOKENS = GRAMMAR.LEX;</pre></div>
         
       
         
@@ -475,44 +515,53 @@ interpreted at this point. Instead, individual words (strings) are checked to se
 
         
           <div class='highlight'><pre>  CODE = CODE.replace(<span class="hljs-regexp">/(\r\n|\n|\r|\t)/gm</span>,<span class="hljs-string">" "</span>);
-  <span class="hljs-keyword">var</span> WORDS = CODE.split(<span class="hljs-regexp">/ +/</span>);</pre></div>
+  <span class="hljs-keyword">var</span> WORDS = CODE.split(<span class="hljs-regexp">/ +/</span>);
+
+  ALL.W = WORDS;</pre></div>
         
       
         
         <p>The regular expressions which are in the hash table <code>TOKENS</code> are tested against each element of <code>WORD</code> to determine which token fits best.</p>
 
         
-          <div class='highlight'><pre>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; WORDS.length; i ++) 
+          <div class='highlight'><pre>  <span class="hljs-built_in">console</span>.log(ALL.W)
+  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; ALL.W.length; i ++) 
   {
+    <span class="hljs-built_in">console</span>.log(ALL.W.length);
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> TOKENS)
     {
       <span class="hljs-keyword">var</span> re = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(TOKENS[key]);
-      <span class="hljs-keyword">if</span> (re.exec(WORDS[i]) != <span class="hljs-literal">null</span>)
+      <span class="hljs-keyword">if</span> (re.exec(ALL.W[i]) != <span class="hljs-literal">null</span>)
       {</pre></div>
         
       
         
-        <p>JavaScript crashes if the word is not found in the hash table at all so the token <code>UNDEFINED</code> is assigned to those which do not fit anywhere else and an error is thrown.</p>
+        <p>The application crashes if the word is not found in the hash table at all so the token <code>UNDEFINED</code> is assigned to those which do not fit anywhere else and an error is thrown.</p>
 
         
           <div class='highlight'><pre>        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'UNDEFINED'</span>)
         {
-          error = <span class="hljs-string">"ERROR: '"</span> + WORDS[i] + <span class="hljs-string">"' is unrecognized "</span>;
-          <span class="hljs-keyword">return</span> {<span class="hljs-string">"TOKENIZED"</span> : TOKENIZED_CODE, <span class="hljs-string">"SYMBOLS"</span> : SYMBOL_TABLE, <span class="hljs-string">"ERROR"</span> : error};
+          ALL.E = <span class="hljs-string">"ERROR: '"</span> + ALL.W[i] + <span class="hljs-string">"' is unrecognized "</span>;
+          <span class="hljs-keyword">return</span> ALL;
         }</pre></div>
         
       
         
-        <p>If the word is an identifier or is the keyword <code>START</code>, it needs to be recorded in the symbol table.</p>
+        <p>If the word is an identifier or is the program’s name, it needs to be recorded in the symbol table.</p>
 
         
-          <div class='highlight'><pre>        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'IDENTIFIER'</span> || key == <span class="hljs-string">'PROGRAM'</span>)
+          <div class='highlight'><pre>        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'PROGRAM'</span>)
         {
-           sym = (key == <span class="hljs-string">'PROGRAM'</span>) ? <span class="hljs-keyword">new</span> SYM.SYMBOL(<span class="hljs-string">'PROGRAM'</span>,<span class="hljs-string">'PROGNAME'</span>,WORDS[i]) : <span class="hljs-keyword">new</span> SYM.SYMBOL(<span class="hljs-literal">undefined</span>,WORDS[i],<span class="hljs-literal">undefined</span>);
-           SYMBOL_TABLE = SYM.insert(sym,SYMBOL_TABLE);
-           error = SYMBOL_TABLE.E;
+          sym = <span class="hljs-keyword">new</span> SYM.SYMBOL(<span class="hljs-string">'PROGRAM'</span>,<span class="hljs-string">'PROGNAME'</span>,ALL.W[i]);
+          ALL = SYM.insert(sym,ALL);
         }
-        TOKENIZED_CODE[i] = key;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'IDENTIFIER'</span>)
+        {
+          sym = <span class="hljs-keyword">new</span> SYM.SYMBOL(<span class="hljs-literal">undefined</span>,ALL.W[i],<span class="hljs-literal">undefined</span>);
+          ALL = SYM.insert(sym,ALL);
+        }
+        ALL.T[i] = key;
+        <span class="hljs-built_in">console</span>.log(ALL.T);
         <span class="hljs-keyword">break</span>;
       }
     }
@@ -520,11 +569,11 @@ interpreted at this point. Instead, individual words (strings) are checked to se
         
       
         
-        <p>After scanning the code for tokens, the <code>TOKENIZED_CODE</code>, <code>WORDS</code> and <code>SYMBOL_TABLE</code> arrays, and the <code>ERROR</code> string are returned to the
+        <p>After scanning the code for tokens, the tokenized code and words arrays, symbol table hash, and the <code>ERROR</code> string are returned to the
 parse function for further processing.</p>
 
         
-          <div class='highlight'><pre>  <span class="hljs-keyword">return</span> {<span class="hljs-string">"T"</span> : TOKENIZED_CODE, <span class="hljs-string">"W"</span> : WORDS, <span class="hljs-string">"ST"</span> : SYMBOL_TABLE.T, <span class="hljs-string">"E"</span> : error};
+          <div class='highlight'><pre>  <span class="hljs-keyword">return</span> ALL;
 }
 },{<span class="hljs-string">"./1_grammar"</span>:<span class="hljs-number">2</span>,<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>}],<span class="hljs-number">5</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
         
@@ -537,7 +586,7 @@ the initially planned one-pass parsing is not implemented here. Instead, there a
 <ul>
 <li><code>checkSyntax</code></li>
 <li><code>simplifyExpressions</code></li>
-<li><code>simplifyBools</code></li>
+<li><code>typeCheck</code></li>
 </ul>
 
         
@@ -575,7 +624,7 @@ to the main compilation sequence and abort the process.</p>
         
       
         
-        <p>The tokens, source code, symbol table and error are returned back to the compiler module. But really, the most important effect of this module is arguably
+        <p>The tokens, source code, symbol table and error are returned back to the compiler module. But really, the arguably most important effect of this module is
 the populated symbol table.</p>
 
         
@@ -584,7 +633,7 @@ the populated symbol table.</p>
         
       
         
-        <p>The <code>checkSyntax</code> function recursively checks the next token to see if the production <code>&lt;CURRENT,NEXT&gt;</code> are accepted by the grammar.
+        <p>The <code>checkSyntax</code> function recursively checks the next token to see if the productions in the form of <code>[CURRENT,NEXT]</code> are accepted by the grammar.
 It returns the state of the system upon completion. <code>ALL.E</code> would contain an error string if an illegal token is found.</p>
 
         
@@ -596,7 +645,7 @@ It returns the state of the system upon completion. <code>ALL.E</code> would con
   }
   <span class="hljs-keyword">else</span>
   {
-    <span class="hljs-keyword">var</span> G = GRAMMAR.getRULES();
+    <span class="hljs-keyword">var</span> G = GRAMMAR.RULES;
     <span class="hljs-keyword">var</span> NEXT = ALL.T[n];
     <span class="hljs-keyword">var</span> CUR = ALL.T[n - <span class="hljs-number">1</span>];
 
@@ -614,13 +663,13 @@ It returns the state of the system upon completion. <code>ALL.E</code> would con
         
       
         
-        <p>Mention typeCheck and apply
-Populates and maintains the symbol table</p>
+        <p>The <code>simplifyExpressions</code> function looks for assignment statements involving Mathematical operations. It simplifies by processing constants
+and storing the result in the symbol table.</p>
 
         
           <div class='highlight'><pre><span class="hljs-keyword">var</span> simplifyExpressions = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ALL</span>)
 </span>{
-  G = GRAMMAR.getRULES();
+  G = GRAMMAR.RULES;
   o = <span class="hljs-number">0</span>; n = <span class="hljs-number">0</span>;
   cur = ALL.T[n];
 
@@ -643,36 +692,24 @@ Populates and maintains the symbol table</p>
         ALL.E = <span class="hljs-string">"ERROR: Incompatible types"</span>
         <span class="hljs-keyword">break</span>;
       }
-      type = ALL.T[<span class="hljs-number">6</span>];
-      sym = <span class="hljs-keyword">new</span> SYM.SYMBOL(type,ID,apply(OP,OPERANDS));
-      TMP = SYM.insert(sym,ALL.ST);
-      ALL.ST = TMP.T;
-      ALL.E = TMP.E;
+      
+      type = ALL.T[o];
+      value = apply(OP,OPERANDS);
+      sym = <span class="hljs-keyword">new</span> SYM.SYMBOL(type,ID,value);
+      ALL = SYM.insert(sym,ALL);      
+      
       <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"done"</span>);
     }
     n ++;
     cur = ALL.T[n]; 
   }
   <span class="hljs-keyword">return</span> ALL;
-}
-
-<span class="hljs-keyword">var</span> apply = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">OP,OPERANDS</span>)
-</span>{
-  n = <span class="hljs-number">0</span>;
-  str = <span class="hljs-string">""</span>;
-  ctr = <span class="hljs-number">0</span>;
-  l = OPERANDS.length;
-  <span class="hljs-keyword">while</span> (n &lt; l)
-  {
-    str = str.concat(OP,OPERANDS[n]);
-  }
-  
-  <span class="hljs-keyword">return</span> <span class="hljs-built_in">eval</span>(str);
 }</pre></div>
         
       
         
-        <p>This function returns true if two expressions are of compatible types and false if they are not.</p>
+        <p>Given that unlimited number of operands are allowed in MICAELang, the type is checked before the data is passed on to the <code>apply</code> function for evaluation.
+The <code>typeCheck</code> function returns true if all operands are of same types and false if they are not.</p>
 
         
           <div class='highlight'><pre><span class="hljs-keyword">var</span> typeCheck = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">OPERANDS</span>)
@@ -694,6 +731,27 @@ Populates and maintains the symbol table</p>
         
       
         
+        <p>The <code>apply</code> function indirectly uses the principle of currying. The input is an operator and its list of operands. The function iterates through the
+list until it reaches the end, and then computes the result. This is indirect currying because while intermediate values are not computed, the traversal
+and formation of the evaluated string is similar to what happens in the method.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-keyword">var</span> apply = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">OP,OPERANDS</span>)
+</span>{
+  n = <span class="hljs-number">0</span>;
+  str = <span class="hljs-string">""</span>;
+  ctr = <span class="hljs-number">0</span>;
+  l = OPERANDS.length;
+  <span class="hljs-keyword">while</span> (n &lt; l)
+  {
+    str = str.concat(OP,OPERANDS[n]);
+  }
+  
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">eval</span>(str);
+}</pre></div>
+        
+      
+        
         
         
           <div class='highlight'><pre>},{<span class="hljs-string">"./1_grammar"</span>:<span class="hljs-number">2</span>,<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./3_tokenizer"</span>:<span class="hljs-number">4</span>}],<span class="hljs-number">6</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
@@ -703,132 +761,229 @@ Populates and maintains the symbol table</p>
         <h4 id="stage-4-code-generation">STAGE 4: CODE GENERATION</h4>
 
         
+      
+        
+        <p>The last layer of compilation is code generation where symbol table values are substituted into expressions and function applications.
+This module is simple because the grammar only has assignments, arithmetic operations and print statements. Moreover, most arithmetic
+expressions are simplified in the parsing phase.</p>
+
+        
+      
+        
+        <p>The <code>generate</code> function iterates through the list of tokens and uses <code>eval</code> to interpret the generated JavaScript code. The output is 
+appended to a string value which is returned to the main compile module as program output.</p>
+
+        
           <div class='highlight'><pre>
 <span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);
 <span class="hljs-keyword">var</span> TOKENIZER = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./3_tokenizer'</span>);
 
 exports.generate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ALL</span>) 
-</span>{</pre></div>
+</span>{ 
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"CODEGEN:generate"</span>)
+  n = <span class="hljs-number">0</span>;
+  JS = <span class="hljs-string">""</span>;
+  err = <span class="hljs-string">""</span>;
+
+  <span class="hljs-keyword">while</span>(ALL.T[n] != <span class="hljs-string">'EOF'</span>)
+  {</pre></div>
         
       
         
-        <p>The productions that are allowed in the language is be defined by EXPRESSIONS.</p>
+        <p>MICAELang’s print statement can only print strings so an error is thrown if a number or boolean value is passed in. If the argument to <code>!!!</code> (print)
+is an identifier, the symbol table is looked up to find the value.</p>
 
         
-      
-        
-        <p>return {“TOKENIZED” : TOKENIZED_CODE, “SYMBOLS” : SYMBOL_TABLE, “ERROR” : error};</p>
-
-        
-          <div class='highlight'><pre>
-  WORDS = ALL.W;
+          <div class='highlight'><pre>    <span class="hljs-keyword">if</span>(ALL.T[n] == <span class="hljs-string">'PRINT'</span>)
+    {
+      t = n + <span class="hljs-number">1</span>; 
+      <span class="hljs-keyword">if</span>(ALL.T[t] == <span class="hljs-string">'STRING'</span> || (ALL.T[t] == <span class="hljs-string">'IDENTIFIER'</span> &amp;&amp; SYM.getTYPE(ALL.W,ALL.ST) == <span class="hljs-string">'STRING'</span>))
+      {
+        str = <span class="hljs-string">"\""</span> + ALL.W[t] + <span class="hljs-string">"\""</span>;
+        JS += <span class="hljs-string">"\n"</span> + <span class="hljs-built_in">eval</span>(str);
+      }
+      <span class="hljs-keyword">else</span>
+      {
+        err = <span class="hljs-string">"ERROR: Non-string token not recognized for stdout"</span>; 
+        <span class="hljs-keyword">return</span> {<span class="hljs-string">"JS"</span>:JS,<span class="hljs-string">"E"</span>:err};
+      }      
+    }
+  }
 
   JS = <span class="hljs-string">"\"hello\""</span>;
-  <span class="hljs-keyword">return</span> {<span class="hljs-string">"JS"</span>:JS, <span class="hljs-string">"E"</span>:<span class="hljs-string">""</span>};
-}</pre></div>
-        
-      
-        
-        
-        
-          <div class='highlight'><pre>},{<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./3_tokenizer"</span>:<span class="hljs-number">4</span>}]},{},[<span class="hljs-number">1</span>]);</pre></div>
+  <span class="hljs-keyword">return</span> {<span class="hljs-string">"JS"</span>:JS, <span class="hljs-string">"E"</span>:err};
+}
+},{<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./3_tokenizer"</span>:<span class="hljs-number">4</span>}]},{},[<span class="hljs-number">1</span>]);</pre></div>
         
       
         
         <h3 id="testing">Testing</h3>
-<p>Test plan – how the program/system was verified. Put the actual test results in the Appendix. This section is useful if your project is more on the software engineering side than research focused.  </p>
-
-        
-      
-        
-        <p>The MICAELang project was tested using whitebox unit tests. Each module builds on top of other ones so each one was verified incrementally before moving on to write the next
+<p>The MICAELang project was tested using white-box unit tests. Each module builds on top of previous ones so each one was verified incrementally before moving on to write the next
 module. Since there are no testing frameworks currently available for this language (MICAELang), testing was done manually by writing snippets of code and compiling
-to see the output.</p>
+to see the output. Each one of these units were tested:</p>
+<ul>
+<li>Tokenizer</li>
+<li>Parser</li>
+<li>Code Generator</li>
+</ul>
 
         
       
         
-        <p>The first unit to be tested was the tokenizer.
-Symbol module
-Parser
-Codegen</p>
-
-        
-      
-        
-        <p>The testing details on each of the units are available in the Appendix section of this paper.</p>
-
-        
-      
-        
-        <h3 id="results">Results</h3>
-<p>This covers different areas to the ‘Testing’ chapter, and is appropriate for ‘research style’ projects. For such projects this chapter should detail the types of experiments/simulations that were carried out with the code written. Why were certain experiments carried out but not others? What were the important parameters in the simulation and how did they affect the results? If there are very many graphs and tables associated with this chapter they may be put in the Appendix, but it is generally better to keep these close to the text they illustrate, as this is easier for the reader.</p>
+        <p>The details of testing each module are available in the Appendix section of this paper.</p>
 
         
       
         
         <h3 id="conclusion-evaluation-and-further-work">Conclusion, Evaluation and Further Work</h3>
-<p>What have you achieved? Give a critical appraisal (evaluation) of your own work - how could the work be taken further (perhaps by another student next year)?</p>
+<p>In conclusion, this application proves that emojis and symbols can be defined in a grammar for programming purposes. Also, it shows that 
+programs can be compiled using JavaScript in the browser.</p>
 
         
       
         
-        <p>This file will contain report sections after Implementation</p>
+        <p>The tests that were run were successful and helpful in ensuring that the the MICAELang compiler works. There were no other problems, except for the
+fact that it took longer to realize what was essential to the project so plenty of time was wasted weeding out unnecessary parts and restarting.</p>
 
         
       
         
-        <h3 id="appendix">APPENDIX</h3>
+        <p>In the future, other constructs of the MICAELang language should be implemented in the parse module so that they can be interpreted as well. Moreover, more complicated
+programming concepts such as loops and user-defined functions can be added to the grammar.</p>
+<p><div style="page-break-after: always;"></div></p>
+<h3 id="references">REFERENCES</h3>
+
+        
+      
+        
+        <p>[1] Browserify. [<a href="http://browserify.org">http://browserify.org</a>], March 2016.  </p>
+
+        
+      
+        
+        <p>[2] Docco. [<a href="https://jashkenas.github.io/docco">https://jashkenas.github.io/docco</a>], March 2016.</p>
+
+        
+      
+        
+        <p>[3] FAQ. Emojipedia. [<a href="http://emojipedia.org/faq">http://emojipedia.org/faq</a>], March 2016.  </p>
+
+        
+      
+        
+        <p>[4] Graham, Scott. Skulpt. [<a href="http://www.skulpt.org">http://www.skulpt.org</a>], April 2016.  </p>
+
+        
+      
+        
+        <p>[5] JavaScript For Cats. [<a href="http://jsforcats.com">http://jsforcats.com</a>], March 2016.  </p>
+
+        
+      
+        
+        <p>[6] What is Ideone. [<a href="https://ideone.com/">https://ideone.com/</a>], March 2016. </p>
+
+        
+      
+        
+        <p>[7] What is Alice?. Alice. [<a href="http://www.alice.org/index.php?page=what_is_alice/what_is_alice">http://www.alice.org/index.php?page=what_is_alice/what_is_alice</a>], March 2016.</p>
+
+        
+      
+        
+        <p><div style="page-break-after: always;"></div></p>
+<h3 id="appendix">APPENDIX</h3>
 <h4 id="-testing-tokenizer-"><em>Testing: Tokenizer</em></h4>
-<p>   <pre><code>
-   = + - <em> / &lt; ^ &gt; == :</em> &lt;3 1314213  “hello” “hi” true     ashka</p>
-<h1 id="-hello-"># hello #</h1>
-<p>   [          ] :D :( ~ 121kjn
-   </code></pre>
-tabs,newlines,spaces to see if they would be ignored
-deliberate syntax error to see if it would be detected
-manually verify that each one’s corresponding token is correct</p>
+<p>To test the tokenizer, a MICAELang script containing all possible members of the grammar is used as input. The following code was used as input and did not register
+any errors.</p>
+<p><pre><code>
+= + - <em> / &lt; ^ &gt; == :</em> &lt;3 1314213  “hello” “hi” true     ashka</p>
+<h1 id="-hello-o"># hello # # :O</h1>
+<p>[          ] :D :( ~ 121kjn
+</code></pre>
+At this stage of testing, the parser and codegen functions had not been written so the focus was on verifying that the resulting tokens produced from this source code
+was accurate. The verification was done by manually checking if each one is correct.</p>
 
         
       
         
-        <h4 id="-testing-symbol-table-"><em>Testing: Symbol table</em></h4>
-<h4 id="-testing-parser-"><em>Testing: Parser</em></h4>
-<p>Minimal working MICAELang parse</p>
-<pre><code>
-:D Hello ~
+        <p>To check if the tokenizer throws the right errors, deliberate syntax errors such as unterminated strings, comments and random symbols were used in the input. Errors were
+reported as expected.</p>
+
+        
+      
+        
+        <h4 id="-testing-parser-"><em>Testing: Parser</em></h4>
+<p>The parser testing checks whether the structure of the source code complies with the specification given by the MICAELang grammar. The parse module has three stages of
+syntax, type and expression checking, and each one was tested separately.</p>
+
+        
+      
+        
+        <p>The first test case was a minimal working MICAELang parse which was tested for structural/grammatical correctness. Here, it is verified that input words satisfy the order
+specified by the grammar. The following code snippet is a minimal MICAELang program which does not really do anything because it exits right after the program entry.</p>
+<p><pre><code>
+:D Hello 
 :(
 </code></pre>
+As expected, the parser did not throw any errors here. To further the parser testing, random text and deliberate grammatical errors were inserted into the input. The
+parser threw the appropriate errors.</p>
 
         
       
         
-        <h4 id="-testing-code-generator-"><em>Testing: Code generator</em></h4>
+        <p>The second test was designed to verify that type-checking works. In assignment statements, the operands all need to be of the same type before they are
+evaluated. The following program was used to check types.</p>
+<p><pre><code>
+:D Hello ~
+i = + 1 1 1 1
+:(
+</code></pre>
+This program did not result in an error. However, if, for example one of the <code>1</code>‘s is replaced with a string, compilation fails because it is not the
+same type as the other operands.</p>
 
         
       
         
-        <h3 id="references">References</h3>
-<p>// This is a hack - copy bibtex format</p>
+        <p>The last test incorporated expressions into the source code. In the grammar, expressions can only be used when they are assigned to a variable so the following
+is a minimal working example.</p>
+<p><pre><code>
+:D Hello ~
+i = + 1 1 1 1
+:(
+</code></pre>
+Two things that were used to verify the expression parsing were the symbol table’s state and the error messages. After execution of this program, the symbol table must be
+populated with the program name and <code>NUMBER i = 4</code>, and it was. Similar to what was done in the previous tests, deliberate syntax and type errors were introduced into 
+the input, thereby causing parsing errors.</p>
 
         
       
         
-        <p>This is [an example][id] reference-style link.</p>
+        <h4 id="-testing-code-generator-"><em>Testing: Code Generator</em></h4>
+<p>Testing the code generator is as easy as checking the input and output fields of the application. If the output field produces an expected result, then the
+code generator is functional. The following program is run:</p>
+<p><pre><code>
+:D Hello ~
+i = + 1 1 1 1 ~
+j = “Hello World” ~
+:O j
+:(
+</code></pre>
+This returns the expected output which is “Hello World.”</p>
 
         
       
         
-        <p>This is <a href="http://example.com/" title="Title">an example</a> inline link.</p>
-
-        
-      
-        
-        <p>Sphere Research Labs. “What is Ideone”. <a href="https://ideone.com/">https://ideone.com/</a>. March 3, 2016.
-Emojipedia Pty Ltd. “FAQ”. <a href="http://emojipedia.org/faq/">http://emojipedia.org/faq/</a>. March 3, 2016.
-Graham, Scott. Skulpt. <a href="http://www.skulpt.org/">http://www.skulpt.org/</a>
-Docco. <a href="https://jashkenas.github.io/docco/">https://jashkenas.github.io/docco/</a>
-Browserify. browserify.org</p>
+        <p>The parser resolves most grammatical errors involving the print statement and literals. Only strings or identifiers containing strings can be used as
+input to the <code>!!!</code>. However, if the value of an identifier is an integer, it will not be caught by the parser. Thus, the following code produces
+an error when run, as expected.</p>
+<pre><code>
+:D Hello ~
+i = + 1 1 1 1 ~
+j = "Hello World" ~
+:O i 
+:(
+</code></pre>
 
         
       

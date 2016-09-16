@@ -1,10 +1,11 @@
+// <div style="page-break-after: always;"></div>
 // ### APPENDIX ###
 // #### *Testing: Tokenizer* ####
 // To test the tokenizer, a MICAELang script containing all possible members of the grammar is used as input. The following code was used as input and did not register
 // any errors.
 // <pre><code>
 // = + - * / < ^ > == :* <3 1314213  "hello" "hi" true     ashka
-// # # hello # #
+// # # hello # # :O
 // [          ] :D :( ~ 121kjn
 // </code></pre>
 // At this stage of testing, the parser and codegen functions had not been written so the focus was on verifying that the resulting tokens produced from this source code
@@ -20,7 +21,7 @@
 // The first test case was a minimal working MICAELang parse which was tested for structural/grammatical correctness. Here, it is verified that input words satisfy the order
 // specified by the grammar. The following code snippet is a minimal MICAELang program which does not really do anything because it exits right after the program entry.
 // <pre><code>
-// :D Hello ~
+// :D Hello 
 // :(
 // </code></pre>
 // As expected, the parser did not throw any errors here. To further the parser testing, random text and deliberate grammatical errors were inserted into the input. The
@@ -30,7 +31,7 @@
 // evaluated. The following program was used to check types.
 // <pre><code>
 // :D Hello ~
-// i = + 1 1 1 1 ~
+// i = + 1 1 1 1
 // :(
 // </code></pre>
 // This program did not result in an error. However, if, for example one of the ```1```'s is replaced with a string, compilation fails because it is not the
@@ -40,7 +41,7 @@
 // is a minimal working example.
 // <pre><code>
 // :D Hello ~
-// i = + 1 1 1 1 ~
+// i = + 1 1 1 1
 // :(
 // </code></pre>
 // Two things that were used to verify the expression parsing were the symbol table's state and the error messages. After execution of this program, the symbol table must be
@@ -54,7 +55,7 @@
 // :D Hello ~
 // i = + 1 1 1 1 ~
 // j = "Hello World" ~
-// !!! j ~
+// :O j
 // :(
 // </code></pre>
 // This returns the expected output which is "Hello World."
@@ -66,6 +67,6 @@
 // :D Hello ~
 // i = + 1 1 1 1 ~
 // j = "Hello World" ~
-// !!! i ~
+// :O i 
 // :(
 // </code></pre>

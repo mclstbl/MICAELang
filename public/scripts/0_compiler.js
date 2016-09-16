@@ -3,16 +3,16 @@
 // Together, they emulate an Integrated Development Environment (IDE) where users can edit, run and view their programs.
 
 // The button triggers the compilation when it is clicked so whenever the main HTML page loads, an EventListener is created in order to detect mouseclicks.
-// Also, ```textarea``` elements have read/write access by default so I turn on read-only mode for the output box whenever the page is loaded.
+// Also, ```textarea``` elements have read/write access by default so read-only mode is activated for the output box whenever the page is loaded.
 window.onload = function() 
 {
   btn = document.getElementById('submitArea');
-  btn.addEventListener('click', compile, false);
+  btn.addEventListener('click', compile);
 
   document.getElementById("outputArea").readOnly = true;
 }
 
-// This function processes the target code generated using the MICAELang input, and is called after compilation is finished. 
+// The next function prints the results of evaluating the target code generated using the MICAELang input, and is called after compilation is finished. 
 // The results of a compilation are posted on the right hand side of the browser (in the read-only textarea) as user output.
 var PROGNAME = "";
 
@@ -25,48 +25,49 @@ function stdout(RESULT)
   document.getElementById('outputArea').scrollTop = document.getElementById('outputArea').scrollHeight;
 }
 
-// The compilation sequence begins here. The parser, symbol and codegen modules are required from here. While not explicitly imported, the tokenize module
-// is crucial to compilation but is called from the parse module.
+// Due to the maximum stack call limits in client-side browser applications, the compilation steps have to be separated into smaller stages.
+// The compilation sequence begins here. While not explicitly imported, the tokenize module is crucial to compilation but is called from the parse module.
 var SYM = require('./2_symbol');
 var PARSER = require('./4_parser');
 var CODEGEN = require('./5_codegen');
 
-exports.compile = function() 
+var compile = function() 
 {
   obj = document.getElementById("input");
   var CODE = obj.value.toString().trim();
   if (CODE == '') { console.log("no"); return true;}
   
-// The ```ALL``` variable contains information about this system's state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
+// The ```ALL``` variable is a hash containing information about this system's state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
 // and error pertaining to the source code. It is passed from module to module so that the state is available at any time. If an error is thrown at any stage, the compilation
 // is aborted and an error is presented to the user.
-  ALL = PARSER.parse(CODE); 
+  var ALL = PARSER.parse(CODE); 
 
-// DELETE
   for(var key in ALL.ST)
   {
     str = "id: " + ALL.ST[key].identifier + " type: " + ALL.ST[key].type + " value: " + ALL.ST[key].value;
     console.log(str);
+    key ++;
   }
-
-  TMP = {"T":ALL.ST,"E":ALL.E};
-  l = SYM.lookup('PROGNAME',TMP);
+  
+  l = SYM.getValue('PROGNAME',ALL);
   PROGNAME = l == undefined ? "" : l;
-// DELETE 
-
 
   if (ALL.E != "")
   {
     stdout(ALL.E);
   }
 
-// The code generator only returns 2 entities in a record: a JavaScript code to be evaluated using built-in JS function ```eval``` and the error string.
+// The code generator only returns 2 entities in a record: an evaluation of generated JavaScript (using built-in JS function ```eval```) and the error string.
   else
   {
     OUTPUT = CODEGEN.generate(ALL);
     str = OUTPUT.E == "" ? OUTPUT.JS : OUTPUT.E;
-    stdout(eval(str));
+    stdout(str);
   }
+
+  return ALL;
 }
+
+exports.compile = compile;
 
 // As mentioned in the _Analysis_, Browserify adds some lines to the output code before each module so here is another one.

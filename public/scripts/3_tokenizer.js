@@ -12,45 +12,53 @@ var SYM = require('./2_symbol');
 // Since this is the first compilation stage after I/O, the symbol table, tokenized code and error are initialized here.
 exports.tokenize = function(CODE)
 {
-  var TOKENS = GRAMMAR.getLEX();
-  var TOKENIZED_CODE = [];
-  var SYMBOL_TABLE = {"T" : [], "E" : ""};
-  var error = "";
+  var ALL = {"T":[],"W":[],"ST":{},"E":""};
+
+  var TOKENS = GRAMMAR.LEX;
 
 // When ```tokenize``` is invoked, CODE contains a string so it needs to be split by whitespace to form ```WORDS```, which is an array.
   CODE = CODE.replace(/(\r\n|\n|\r|\t)/gm," ");
   var WORDS = CODE.split(/ +/);
 
+  ALL.W = WORDS;
+
 // The regular expressions which are in the hash table ```TOKENS``` are tested against each element of ```WORD``` to determine which token fits best.
-  for (i = 0; i < WORDS.length; i ++) 
+  for (i = 0; i < ALL.W.length; i ++) 
   {
+    console.log(ALL.W.length);
     for (var key in TOKENS)
     {
       var re = new RegExp(TOKENS[key]);
-      if (re.exec(WORDS[i]) != null)
+      if (re.exec(ALL.W[i]) != null)
       {
 
-// JavaScript crashes if the word is not found in the hash table at all so the token ```UNDEFINED``` is assigned to those which do not fit anywhere else and an error is thrown.
+// The application crashes if the word is not found in the hash table at all so the token ```UNDEFINED``` is assigned to those which do not fit anywhere else and an error is thrown.
         if (key == 'UNDEFINED')
         {
-          error = "ERROR: '" + WORDS[i] + "' is unrecognized ";
-          return {"TOKENIZED" : TOKENIZED_CODE, "SYMBOLS" : SYMBOL_TABLE, "ERROR" : error};
+          ALL.E = "ERROR: '" + ALL.W[i] + "' is unrecognized ";
+          return ALL;
         }
         
-// If the word is an identifier or is the keyword ```START```, it needs to be recorded in the symbol table.
-        if (key == 'IDENTIFIER' || key == 'PROGRAM')
+// If the word is an identifier or is the program's name, it needs to be recorded in the symbol table.
+        if (key == 'PROGRAM')
         {
-           sym = (key == 'PROGRAM') ? new SYM.SYMBOL('PROGRAM','PROGNAME',WORDS[i]) : new SYM.SYMBOL(undefined,WORDS[i],undefined);
-           SYMBOL_TABLE = SYM.insert(sym,SYMBOL_TABLE);
-           error = SYMBOL_TABLE.E;
+          sym = new SYM.SYMBOL('PROGRAM','PROGNAME',ALL.W[i]);
+          ALL = SYM.insert(sym,ALL);
         }
-        TOKENIZED_CODE[i] = key;
-        break;
+        else if (key == 'IDENTIFIER')
+        {
+          sym = new SYM.SYMBOL(undefined,ALL.W[i],undefined);
+          ALL = SYM.insert(sym,ALL);
+        }
+        
+        ALL.T[i] = key;
+        console.log(ALL.T);
+       // break;
       }
     }
   }
 
-// After scanning the code for tokens, the ```TOKENIZED_CODE```, ```WORDS``` and ```SYMBOL_TABLE``` arrays, and the ```ERROR``` string are returned to the
+// After scanning the code for tokens, the tokenized code and words arrays, symbol table hash, and the ```ERROR``` string are returned to the
 // parse function for further processing.
-  return {"T" : TOKENIZED_CODE, "W" : WORDS, "ST" : SYMBOL_TABLE.T, "E" : error};
+  return ALL;
 }

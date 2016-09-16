@@ -4,7 +4,7 @@
 // the initially planned one-pass parsing is not implemented here. Instead, there are 3 main functions executed within the main ```parse``` sequence
 // * ```checkSyntax```
 // * ```simplifyExpressions```
-// * ```simplifyBools```
+// * ```typeCheck```
 
 var GRAMMAR = require('./1_grammar');
 var SYM = require('./2_symbol');
@@ -26,12 +26,12 @@ exports.parse = function(CODE)
 // to the main compilation sequence and abort the process.
   ALL = ALL.E == "" ? simplifyExpressions(ALL) : ALL;
 
-// The tokens, source code, symbol table and error are returned back to the compiler module. But really, the most important effect of this module is arguably
+// The tokens, source code, symbol table and error are returned back to the compiler module. But really, the arguably most important effect of this module is
 // the populated symbol table.
   return ALL;
 }
 
-// The ```checkSyntax``` function recursively checks the next token to see if the production ```<CURRENT,NEXT>``` are accepted by the grammar.
+// The ```checkSyntax``` function recursively checks the next token to see if the productions in the form of ```[CURRENT,NEXT]``` are accepted by the grammar.
 // It returns the state of the system upon completion. ```ALL.E``` would contain an error string if an illegal token is found.
 var checkSyntax = function(n,ALL)
 {
@@ -41,7 +41,7 @@ var checkSyntax = function(n,ALL)
   }
   else
   {
-    var G = GRAMMAR.getRULES();
+    var G = GRAMMAR.RULES;
     var NEXT = ALL.T[n];
     var CUR = ALL.T[n - 1];
 
@@ -57,11 +57,11 @@ var checkSyntax = function(n,ALL)
   return ALL;
 }
 
-// Mention typeCheck and apply
-// Populates and maintains the symbol table
+// The ```simplifyExpressions``` function looks for assignment statements involving Mathematical operations. It simplifies by processing constants
+// and storing the result in the symbol table.
 var simplifyExpressions = function(ALL)
 {
-  G = GRAMMAR.getRULES();
+  G = GRAMMAR.RULES;
   o = 0; n = 0;
   cur = ALL.T[n];
 
@@ -84,11 +84,12 @@ var simplifyExpressions = function(ALL)
         ALL.E = "ERROR: Incompatible types"
         break;
       }
-      type = ALL.T[6];
-      sym = new SYM.SYMBOL(type,ID,apply(OP,OPERANDS));
-      TMP = SYM.insert(sym,ALL.ST);
-      ALL.ST = TMP.T;
-      ALL.E = TMP.E;
+      
+      type = ALL.T[o];
+      value = apply(OP,OPERANDS);
+      sym = new SYM.SYMBOL(type,ID,value);
+      ALL = SYM.insert(sym,ALL);      
+      
       console.log("done");
     }
     n ++;
@@ -97,21 +98,8 @@ var simplifyExpressions = function(ALL)
   return ALL;
 }
 
-var apply = function(OP,OPERANDS)
-{
-  n = 0;
-  str = "";
-  ctr = 0;
-  l = OPERANDS.length;
-  while (n < l)
-  {
-    str = str.concat(OP,OPERANDS[n]);
-  }
-  
-  return eval(str);
-}
-
-// This function returns true if two expressions are of compatible types and false if they are not.
+// Given that unlimited number of operands are allowed in MICAELang, the type is checked before the data is passed on to the ```apply``` function for evaluation.
+// The ```typeCheck``` function returns true if all operands are of same types and false if they are not.
 var typeCheck = function(OPERANDS)
 {
   l = OPERANDS.length;
@@ -129,4 +117,20 @@ var typeCheck = function(OPERANDS)
   return true;
 }
 
+// The ```apply``` function indirectly uses the principle of currying. The input is an operator and its list of operands. The function iterates through the
+// list until it reaches the end, and then computes the result. This is indirect currying because while intermediate values are not computed, the traversal
+// and formation of the evaluated string is similar to what happens in the method.
+var apply = function(OP,OPERANDS)
+{
+  n = 0;
+  str = "";
+  ctr = 0;
+  l = OPERANDS.length;
+  while (n < l)
+  {
+    str = str.concat(OP,OPERANDS[n]);
+  }
+  
+  return eval(str);
+}
 //

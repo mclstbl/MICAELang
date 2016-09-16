@@ -3,33 +3,35 @@
 // ## April 2016
 
 // ### Introduction
-// MICAELang is an esoteric context-free language which is compiled using JavaScript (to target language JavaScript) in the browser. The source language is comprised of emojis, numbers, 
-// strings and mathematical/boolean operators. The compiler runs solely in the browser and was written in "vanilla" JavaScript, which means that no servers, external APIs 
-// or frameworks were used. Due to the maximum
-// stack call limits in client-side browser applications, the compilation steps had to be separated into smaller stages, which will be explained in this report.
+// MICAELang is an esoteric context-free language which is compiled to JavaScript using the browser.
+// The source language is comprised of emojis, numbers, strings and mathematical operators. The compiler runs solely in the browser and 
+// was written in "vanilla" JavaScript, which means that no servers, external APIs 
+// or frameworks were used. The source code can be found in https://github.com/mclstbl/MICAELang.
 
 // ### Problem ###
 // The creation of MICAELang was inspired by two current situations.
 // First, there are a total of 845 emojis supported across all smartphone and computer platforms (Emojipedia), and each one has an associated meaning. These graphical characters
-// are often used in messaging in order to communicate. Secondly, mainstream compilers require installation on a local computer; most online compilers such as Ideone connect to a 
-// remote server on which the input code is compiled then return the results to the browser. The purpose of MICAELang is to create a language which can be parsed and executed purely within
-// a browser.
+// are often used in messaging in order to communicate, but there are not many programming languages that utilize them. 
+// Secondly, mainstream compilers require installation on a local computer; most popular online compilers such as Ideone connect to a 
+// remote server on which the input code is compiled then return the results to the browser. 
+// The purpose of MICAELang is to create an emoji and symbol-based language which can be parsed and executed purely within a browser.
 
 // ### History and Background
-// The MICAELang project's purpose is to use esoteric programming concepts and perform a minimal amount of computation in the background so that compilation can run in the browser.
-// A similar idea is implemented in Skulpt (Graham), which is an in-browser implementation of Python. The main selling point of Skulpt is the fact that it is compiled in the client
-// side and so there is no risk of throttling a remote server, and that there is no installation required to use it. 
+// The MICAELang project's purpose is to use emojis as keywords and minimize amount of computation in the background so that compilation can run in the browser.
+// A similar idea is implemented in Skulpt, which is an in-browser implementation of Python. The main selling point of Skulpt is the fact that it is compiled on the client
+// side so there is no risk of throttling a remote server, and also that there is no installation required to use it. 
 
 // The main differences between MICAELang and Skulpt are:
-// * The grammar is not as large as Python's. MICAELang currently only supports Mathematical and Boolean expression assignments, and print statements.
+// * MICAELang currently only supports arithmetic expression assignments and print statements so the grammar is not very complex.
 // * MICAELang is context-free - the syntax of expressions are a bit different from Python because there is no support for parentheses.
+// * MICAELang uses symbols and emojis as keywords.
 
 // ### Analysis and Design
 // MICAELang is an application written in JavaScript, which is a programming language commonly used to control the behaviour of web browsers. It follows that the application
 // runs on a web platform since most browsers are capable of running JavaScript; no installation is required on the user's end.
 
 // Initially, the project was designed to use meteor.js in order to use a preexisting parser generator called Jison. However, since the MICAELang grammar is very simple and writing
-// a parser was not very complicated, external frameworks proved to be of no use. Instead, a tool called Browserify is utilized in the app's build process in order to 
+// a parser was not very complicated, external frameworks proved to be of little use. Instead, a tool called Browserify is utilized in the app's build process in order to 
 // bundle up all the smaller modules into one script which is loaded onto the HTML web interface. The most obvious effect of Browserify is the enablement of 
 // the ```require```, ```module```, and ```exports``` keywords which typically do not run on the client side of a web application. 
 
