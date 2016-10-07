@@ -392,6 +392,7 @@ exports.tokenize = function(CODE)
           sym = new SYM.SYMBOL(undefined,ALL.W[i],undefined);
           ALL = SYM.insert(sym,ALL);
         }
+        
         ALL.T[i] = key;
         console.log(ALL.T);
        // break;

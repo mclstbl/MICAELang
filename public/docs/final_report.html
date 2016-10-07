@@ -4,38 +4,56 @@
 <head>
   <title>MICAELang: Multiplatform Illustrated Context-Free ASCII Emoji Language</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
-  <link rel="stylesheet" media="all" href="plain.css" />
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="page">
-
-      <div class="header">
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
         
-          
-          <h1 id="micaelang-multiplatform-illustrated-context-free-ascii-emoji-language">MICAELang: Multiplatform Illustrated Context-Free ASCII Emoji Language</h1>
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="micaelang-multiplatform-illustrated-context-free-ascii-emoji-language">MICAELang: Multiplatform Illustrated Context-Free ASCII Emoji Language</h1>
 <h2 id="by-micaela-e-estabillo">By Micaela E. Estabillo</h2>
 <h2 id="april-2016">April 2016</h2>
 
-          
+            </div>
+            
+        </li>
         
-
         
-      </div>
-
-      
-        
-        <h3 id="introduction">Introduction</h3>
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3 id="introduction">Introduction</h3>
 <p>MICAELang is an esoteric context-free language which is compiled to JavaScript using the browser.
 The source language is comprised of emojis, numbers, strings and mathematical operators. The compiler runs solely in the browser and 
 was written in “vanilla” JavaScript, which means that no servers, external APIs 
 or frameworks were used. The source code can be found in <a href="https://github.com/mclstbl/MICAELang">https://github.com/mclstbl/MICAELang</a>.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h3 id="problem">Problem</h3>
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="problem">Problem</h3>
 <p>The creation of MICAELang was inspired by two current situations.
 First, there are a total of 845 emojis supported across all smartphone and computer platforms (Emojipedia), and each one has an associated meaning. These graphical characters
 are often used in messaging in order to communicate, but there are not many programming languages that utilize them. 
@@ -43,91 +61,172 @@ Secondly, mainstream compilers require installation on a local computer; most po
 remote server on which the input code is compiled then return the results to the browser. 
 The purpose of MICAELang is to create an emoji and symbol-based language which can be parsed and executed purely within a browser.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h3 id="history-and-background">History and Background</h3>
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h3 id="history-and-background">History and Background</h3>
 <p>The MICAELang project’s purpose is to use emojis as keywords and minimize amount of computation in the background so that compilation can run in the browser.
 A similar idea is implemented in Skulpt, which is an in-browser implementation of Python. The main selling point of Skulpt is the fact that it is compiled on the client
 side so there is no risk of throttling a remote server, and also that there is no installation required to use it. </p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The main differences between MICAELang and Skulpt are:</p>
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>The main differences between MICAELang and Skulpt are:</p>
 <ul>
 <li>MICAELang currently only supports arithmetic expression assignments and print statements so the grammar is not very complex.</li>
 <li>MICAELang is context-free - the syntax of expressions are a bit different from Python because there is no support for parentheses.</li>
 <li>MICAELang uses symbols and emojis as keywords.</li>
 </ul>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h3 id="analysis-and-design">Analysis and Design</h3>
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="analysis-and-design">Analysis and Design</h3>
 <p>MICAELang is an application written in JavaScript, which is a programming language commonly used to control the behaviour of web browsers. It follows that the application
 runs on a web platform since most browsers are capable of running JavaScript; no installation is required on the user’s end.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>Initially, the project was designed to use meteor.js in order to use a preexisting parser generator called Jison. However, since the MICAELang grammar is very simple and writing
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Initially, the project was designed to use meteor.js in order to use a preexisting parser generator called Jison. However, since the MICAELang grammar is very simple and writing
 a parser was not very complicated, external frameworks proved to be of little use. Instead, a tool called Browserify is utilized in the app’s build process in order to 
 bundle up all the smaller modules into one script which is loaded onto the HTML web interface. The most obvious effect of Browserify is the enablement of 
 the <code>require</code>, <code>module</code>, and <code>exports</code> keywords which typically do not run on the client side of a web application. </p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>Overall, each MICAELang compilation has 4 stages: user I/O, tokenization, parsing and code generation. Each step is contained in a separate module, and modifies the system’s state.
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Overall, each MICAELang compilation has 4 stages: user I/O, tokenization, parsing and code generation. Each step is contained in a separate module, and modifies the system’s state.
 In a typical execution,the user enters MICAELang code into an HTML interface, which is forwarded to the tokenization module to prepare the code for parsing. 
 It is important to mention that all identifiers found in the source code are recorded in a symbol table, which is used during code generation. 
 Finally, after the code is generated, the resulting action (or error) is displayed back to the browser.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The documentation, including this report, was generated using literate programming with the open-source tool Docco and some shell scripting. 
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>The documentation, including this report, was generated using literate programming with the open-source tool Docco and some shell scripting. 
 Generating this report required some maneuvering using a shell build script in order to make it look pretty - Browserify adds extra lines to the generated script which does
 not display well using only Docco.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h3 id="documentation">Documentation</h3>
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h3 id="documentation">Documentation</h3>
 <p>The following function header starts off the Browserify-generated script bundle. It enables the <code>exports</code>, <code>require</code> and <code>module</code> JavaScript keywords.  </p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">e</span>(<span class="hljs-params">t,n,r</span>)</span>{<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params">o,u</span>)</span>{<span class="hljs-keyword">if</span>(!n[o]){<span class="hljs-keyword">if</span>(!t[o]){<span class="hljs-keyword">var</span> a=<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">require</span>==<span class="hljs-string">"function"</span>&amp;&amp;<span class="hljs-built_in">require</span>;<span class="hljs-keyword">if</span>(!u&amp;&amp;a)<span class="hljs-keyword">return</span> a(o,!<span class="hljs-number">0</span>);<span class="hljs-keyword">if</span>(i)<span class="hljs-keyword">return</span> i(o,!<span class="hljs-number">0</span>);<span class="hljs-keyword">var</span> f=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Cannot find module '"</span>+o+<span class="hljs-string">"'"</span>);<span class="hljs-keyword">throw</span> f.code=<span class="hljs-string">"MODULE_NOT_FOUND"</span>,f}<span class="hljs-keyword">var</span> l=n[o]={exports:{}};t[o][<span class="hljs-number">0</span>].call(l.exports,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{<span class="hljs-keyword">var</span> n=t[o][<span class="hljs-number">1</span>][e];<span class="hljs-keyword">return</span> s(n?n:e)},l,l.exports,e,t,n,r)}<span class="hljs-keyword">return</span> n[o].exports}<span class="hljs-keyword">var</span> i=<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">require</span>==<span class="hljs-string">"function"</span>&amp;&amp;<span class="hljs-built_in">require</span>;<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> o=<span class="hljs-number">0</span>;o&lt;r.length;o++)s(r[o]);<span class="hljs-keyword">return</span> s})({<span class="hljs-number">1</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div></div>
+            
+        </li>
         
-          <div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">e</span>(<span class="hljs-params">t,n,r</span>)</span>{<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">s</span>(<span class="hljs-params">o,u</span>)</span>{<span class="hljs-keyword">if</span>(!n[o]){<span class="hljs-keyword">if</span>(!t[o]){<span class="hljs-keyword">var</span> a=<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">require</span>==<span class="hljs-string">"function"</span>&amp;&amp;<span class="hljs-built_in">require</span>;<span class="hljs-keyword">if</span>(!u&amp;&amp;a)<span class="hljs-keyword">return</span> a(o,!<span class="hljs-number">0</span>);<span class="hljs-keyword">if</span>(i)<span class="hljs-keyword">return</span> i(o,!<span class="hljs-number">0</span>);<span class="hljs-keyword">var</span> f=<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"Cannot find module '"</span>+o+<span class="hljs-string">"'"</span>);<span class="hljs-keyword">throw</span> f.code=<span class="hljs-string">"MODULE_NOT_FOUND"</span>,f}<span class="hljs-keyword">var</span> l=n[o]={exports:{}};t[o][<span class="hljs-number">0</span>].call(l.exports,<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{<span class="hljs-keyword">var</span> n=t[o][<span class="hljs-number">1</span>][e];<span class="hljs-keyword">return</span> s(n?n:e)},l,l.exports,e,t,n,r)}<span class="hljs-keyword">return</span> n[o].exports}<span class="hljs-keyword">var</span> i=<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">require</span>==<span class="hljs-string">"function"</span>&amp;&amp;<span class="hljs-built_in">require</span>;<span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> o=<span class="hljs-number">0</span>;o&lt;r.length;o++)s(r[o]);<span class="hljs-keyword">return</span> s})({<span class="hljs-number">1</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
         
-      
-        
-        <h4 id="stage-1-user-i-o">STAGE 1: USER I/O</h4>
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h4 id="stage-1-user-i-o">STAGE 1: USER I/O</h4>
 <p>There are three components in the web Graphical User Interface (GUI): the editable textarea, clickable “Compile” button, and the read-only output textarea.
 Together, they emulate an Integrated Development Environment (IDE) where users can edit, run and view their programs.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The button triggers the compilation when it is clicked so whenever the main HTML page loads, an EventListener is created in order to detect mouseclicks.
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>The button triggers the compilation when it is clicked so whenever the main HTML page loads, an EventListener is created in order to detect mouseclicks.
 Also, <code>textarea</code> elements have read/write access by default so read-only mode is activated for the output box whenever the page is loaded.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-built_in">window</span>.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">window</span>.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) 
 </span>{
   btn = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'submitArea'</span>);
   btn.addEventListener(<span class="hljs-string">'click'</span>, compile);
 
   <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"outputArea"</span>).readOnly = <span class="hljs-literal">true</span>;
-}</pre></div>
+}</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The next function prints the results of evaluating the target code generated using the MICAELang input, and is called after compilation is finished. 
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>The next function prints the results of evaluating the target code generated using the MICAELang input, and is called after compilation is finished. 
 The results of a compilation are posted on the right hand side of the browser (in the read-only textarea) as user output.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> PROGNAME = <span class="hljs-string">""</span>;
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> PROGNAME = <span class="hljs-string">""</span>;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stdout</span>(<span class="hljs-params">RESULT</span>)
 </span>{
@@ -136,15 +235,23 @@ The results of a compilation are posted on the right hand side of the browser (i
   time = date.toLocaleTimeString().concat(<span class="hljs-string">" $ "</span>); 
   <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'outputArea'</span>).innerHTML += <span class="hljs-string">" "</span> + PROGNAME + <span class="hljs-string">"\n"</span> + <span class="hljs-string">"\n"</span> + time;
   <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'outputArea'</span>).scrollTop = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'outputArea'</span>).scrollHeight;
-}</pre></div>
+}</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>Due to the maximum stack call limits in client-side browser applications, the compilation steps have to be separated into smaller stages.
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Due to the maximum stack call limits in client-side browser applications, the compilation steps have to be separated into smaller stages.
 The compilation sequence begins here. While not explicitly imported, the tokenize module is crucial to compilation but is called from the parse module.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);
 <span class="hljs-keyword">var</span> PARSER = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./4_parser'</span>);
 <span class="hljs-keyword">var</span> CODEGEN = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./5_codegen'</span>);
 
@@ -152,16 +259,24 @@ The compilation sequence begins here. While not explicitly imported, the tokeniz
 </span>{
   obj = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"input"</span>);
   <span class="hljs-keyword">var</span> CODE = obj.value.toString().trim();
-  <span class="hljs-keyword">if</span> (CODE == <span class="hljs-string">''</span>) { <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"no"</span>); <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;}</pre></div>
+  <span class="hljs-keyword">if</span> (CODE == <span class="hljs-string">''</span>) { <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"no"</span>); <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;}</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>ALL</code> variable is a hash containing information about this system’s state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>The <code>ALL</code> variable is a hash containing information about this system’s state after each stage of compilation. It is a record containing the tokens, string inputs, symbol table
 and error pertaining to the source code. It is passed from module to module so that the state is available at any time. If an error is thrown at any stage, the compilation
 is aborted and an error is presented to the user.</p>
 
-        
-          <div class='highlight'><pre>  <span class="hljs-keyword">var</span> ALL = PARSER.parse(CODE); 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> ALL = PARSER.parse(CODE); 
 
   <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> ALL.ST)
   {
@@ -176,14 +291,22 @@ is aborted and an error is presented to the user.</p>
   <span class="hljs-keyword">if</span> (ALL.E != <span class="hljs-string">""</span>)
   {
     stdout(ALL.E);
-  }</pre></div>
+  }</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The code generator only returns 2 entities in a record: an evaluation of generated JavaScript (using built-in JS function <code>eval</code>) and the error string.</p>
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>The code generator only returns 2 entities in a record: an evaluation of generated JavaScript (using built-in JS function <code>eval</code>) and the error string.</p>
 
-        
-          <div class='highlight'><pre>  <span class="hljs-keyword">else</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">else</span>
   {
     OUTPUT = CODEGEN.generate(ALL);
     str = OUTPUT.E == <span class="hljs-string">""</span> ? OUTPUT.JS : OUTPUT.E;
@@ -193,31 +316,55 @@ is aborted and an error is presented to the user.</p>
   <span class="hljs-keyword">return</span> ALL;
 }
 
-exports.compile = compile;</pre></div>
+exports.compile = compile;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>As mentioned in the <em>Analysis</em>, Browserify adds some lines to the output code before each module so here is another one.</p>
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>As mentioned in the <em>Analysis</em>, Browserify adds some lines to the output code before each module so here is another one.</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+},{<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./4_parser"</span>:<span class="hljs-number">5</span>,<span class="hljs-string">"./5_codegen"</span>:<span class="hljs-number">6</span>}],<span class="hljs-number">2</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div></div>
+            
+        </li>
         
-          <div class='highlight'><pre>
-},{<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./4_parser"</span>:<span class="hljs-number">5</span>,<span class="hljs-string">"./5_codegen"</span>:<span class="hljs-number">6</span>}],<span class="hljs-number">2</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
         
-      
-        
-        <h4 id="the-micaelang-grammar">The MICAELang Grammar</h4>
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <h4 id="the-micaelang-grammar">The MICAELang Grammar</h4>
 <p>Before moving on to the other modules, here is the MICAELang grammar explained. Not all of the productions defined here are compiled correctly as of now, but they are all
 syntactically parse-able.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p><code>LEX</code> is a hash table that defines the tokens and regular expression patterns for the grammar’s keywords.
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><code>LEX</code> is a hash table that defines the tokens and regular expression patterns for the grammar’s keywords.
 There are only 3 data types accepted and they are inferred by the parser: Number, String and Boolean. Everything else that is not an operand or keyword is interpreted
 as an identifier.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> LEX = 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> LEX = 
 {
 <span class="hljs-string">'START'</span>:          <span class="hljs-regexp">/\:D/</span>,
 <span class="hljs-string">'EOF'</span>:            <span class="hljs-regexp">/\:\(/</span>,
@@ -249,16 +396,24 @@ as an identifier.</p>
 <span class="hljs-string">'UNDEFINED'</span>:      <span class="hljs-regexp">/.*/</span>
 };
 
-exports.LEX = LEX;</pre></div>
+exports.LEX = LEX;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>RULES</code> hash table contains key-value pairs containing the token and a list of acceptable right-hand side tokens.
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>The <code>RULES</code> hash table contains key-value pairs containing the token and a list of acceptable right-hand side tokens.
 The grammar is left-recursive which means that the operators or functions are on the left-hand side and the operands are on the right. The parser supports
 unlimited operands, but they have to be of the same type.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> RULES =
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> RULES =
 {
 <span class="hljs-string">'NUMBER'</span>:       [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'EOF'</span>],
 <span class="hljs-string">'BOOLEAN'</span>:      [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'EOL'</span>,<span class="hljs-string">'EOF'</span>],
@@ -278,24 +433,40 @@ unlimited operands, but they have to be of the same type.</p>
 <span class="hljs-string">'OR'</span>:           [<span class="hljs-string">'BOOL'</span>,<span class="hljs-string">'IDENTIFIER'</span>], 
 <span class="hljs-string">'PRINT'</span>:        [<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'BOOLEAN'</span>],
 <span class="hljs-string">'EOL'</span>:          [<span class="hljs-string">'ELSEIF'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'ELSE'</span>,<span class="hljs-string">'FI'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'PRINT'</span>,<span class="hljs-string">'COMMENT'</span>],
-<span class="hljs-string">'START'</span>:        [<span class="hljs-string">'PROGRAM'</span>],</pre></div>
+<span class="hljs-string">'START'</span>:        [<span class="hljs-string">'PROGRAM'</span>],</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>There are three syntax subdivisions which are also accessable as part of the rules: math operators, bool operators and expressions.</p>
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>There are three syntax subdivisions which are also accessable as part of the rules: math operators, bool operators and expressions.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-string">'OPERATORS'</span>:    [<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>],
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-string">'OPERATORS'</span>:    [<span class="hljs-string">'POW'</span>,<span class="hljs-string">'MULT'</span>,<span class="hljs-string">'DIV'</span>,<span class="hljs-string">'PLUS'</span>,<span class="hljs-string">'MINUS'</span>],
 <span class="hljs-string">'BOOL_OPS'</span>:     [<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'EQ'</span>],
-<span class="hljs-string">'EXPRESSIONS'</span>:  [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>],</pre></div>
+<span class="hljs-string">'EXPRESSIONS'</span>:  [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>],</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The following rules for comments, parentheses, and conditionals are not implemented in the parsing yet. 
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>The following rules for comments, parentheses, and conditionals are not implemented in the parsing yet. 
 Although their syntax can be verified when used as input, the semantics are not interpretable by the parser as of now.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-string">'COMMENT'</span>:      [<span class="hljs-string">'ELSEIF'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'ELSE'</span>,<span class="hljs-string">'FI'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOL'</span>],
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-string">'COMMENT'</span>:      [<span class="hljs-string">'ELSEIF'</span>,<span class="hljs-string">'IF'</span>,<span class="hljs-string">'ELSE'</span>,<span class="hljs-string">'FI'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOL'</span>],
 <span class="hljs-string">'LBRACKET'</span>:     [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'COMMENT'</span>],
 <span class="hljs-string">'RBRACKET'</span>:     [<span class="hljs-string">'NUMBER'</span>,<span class="hljs-string">'STRING'</span>,<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'COMMENT'</span>,<span class="hljs-string">'EOL'</span>],
 <span class="hljs-string">'IF'</span>:           [<span class="hljs-string">'BOOLEAN'</span>,<span class="hljs-string">'IDENTIFIER'</span>,<span class="hljs-string">'LT'</span>,<span class="hljs-string">'GT'</span>,<span class="hljs-string">'EQ'</span>,<span class="hljs-string">'AND'</span>,<span class="hljs-string">'OR'</span>,<span class="hljs-string">'LBRACKET'</span>],
@@ -307,42 +478,82 @@ Although their syntax can be verified when used as input, the semantics are not 
 exports.RULES = RULES;
 
 
-},{}],<span class="hljs-number">3</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
+},{}],<span class="hljs-number">3</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div></div>
+            
+        </li>
         
-      
         
-        <div style="page-break-after: always;"></div>
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <div style="page-break-after: always;"></div>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h4 id="the-symbol-table">The Symbol Table</h4>
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <h4 id="the-symbol-table">The Symbol Table</h4>
 <p>The <code>symbol.js</code> module defines a structure for containing the identifier, type, and value of variables (<code>IDENTIFIER</code>) in MICAELang. The actual table
 is a hash table of identifiers and their associated <code>SYMBOL</code> objects as key-value pairs.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>This module defines three methods</p>
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>This module defines three methods</p>
 <ul>
 <li><code>lookup</code></li>
 <li><code>update</code></li>
 <li><code>insert</code></li>
 </ul>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>During the tokenization and parsing of a program, this module maintains a symbol table containing 0 or more instances of <code>SYMBOL</code>. The three methods
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>During the tokenization and parsing of a program, this module maintains a symbol table containing 0 or more instances of <code>SYMBOL</code>. The three methods
 are designed such that duplicate symbols are not allowed in the language, and type mismatches cause a compilation error.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The SYMBOL object has three fields: type, identifier and value.</p>
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>The SYMBOL object has three fields: type, identifier and value.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> SYMBOL = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t,i,v</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> SYMBOL = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t,i,v</span>)
 </span>{
   <span class="hljs-keyword">this</span>.type = t;
   <span class="hljs-keyword">this</span>.identifier = i;
@@ -353,15 +564,23 @@ SYMBOL.prototype = {
   doX : <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{}
 }
 
-exports.SYMBOL = SYMBOL;</pre></div>
+exports.SYMBOL = SYMBOL;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>update</code> function attempts to modify the value of an existing symbol table entry.
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>The <code>update</code> function attempts to modify the value of an existing symbol table entry.
 It returns the new status of the symbol table, and the <code>ERROR</code> string, which is empty unless there is a type mismatch.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">SYM,ALL</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">SYM,ALL</span>)
 </span>{
   i = SYM.identifier;  
   <span class="hljs-keyword">if</span> (ALL.ST[i] != <span class="hljs-literal">undefined</span> &amp;&amp; (ALL.ST[i].type == SYM.type || ALL.ST[i].type == <span class="hljs-literal">undefined</span>))
@@ -375,22 +594,30 @@ It returns the new status of the symbol table, and the <code>ERROR</code> string
   <span class="hljs-keyword">return</span> ALL;
 }
 
-exports.update = update;</pre></div>
+exports.update = update;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>insert</code> function adds a new entry to the symbol table if it does not exist yet; otherwise, it tries to update the symbol associated with the identifier.
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>The <code>insert</code> function adds a new entry to the symbol table if it does not exist yet; otherwise, it tries to update the symbol associated with the identifier.
 It returns an array containing the new status of the symbol table and the <code>ERROR</code> string. Note that if the identifier exists in the symbol table, the error
 depends on the return value of the <code>update</code> function.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> insert = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">SYM,ALL</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> insert = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">SYM,ALL</span>)
 </span>{
   i = SYM.identifier;
-  <span class="hljs-keyword">if</span> (ALL.ST[<span class="hljs-built_in">eval</span>(i)] == <span class="hljs-literal">undefined</span>)
+  <span class="hljs-keyword">if</span> (ALL.ST[i] == <span class="hljs-literal">undefined</span>)
   {
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"insert"</span>)
-    <span class="hljs-built_in">eval</span>(<span class="hljs-string">"ALL.ST."</span> + i + <span class="hljs-string">" = SYM"</span>);
+    ALL.ST.i = SYM;
   }
   <span class="hljs-keyword">else</span>
   {
@@ -399,14 +626,22 @@ depends on the return value of the <code>update</code> function.</p>
   <span class="hljs-keyword">return</span> ALL;
 }
 
-exports.insert = insert;</pre></div>
+exports.insert = insert;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The following function returns the type of an identifier if it exists in the table, and returns undefined if lookup fails to find the entry.</p>
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>The following function returns the type of an identifier if it exists in the table, and returns undefined if lookup fails to find the entry.</p>
 
-        
-          <div class='highlight'><pre>exports.getType = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.getType = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
 </span>{
   <span class="hljs-keyword">if</span> (isEmpty(ALL.ST))
   {
@@ -420,14 +655,22 @@ exports.insert = insert;</pre></div>
     }
   }
   <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
-}</pre></div>
+}</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>getValue</code> function returns the current value of the identifier in the symbol table if it exists, and returns <code>undefined</code> otherwise.</p>
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>The <code>getValue</code> function returns the current value of the identifier in the symbol table if it exists, and returns <code>undefined</code> otherwise.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> getValue = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
 </span>{
   <span class="hljs-keyword">if</span> (isEmpty(ALL.ST))
   {
@@ -443,14 +686,22 @@ exports.insert = insert;</pre></div>
   <span class="hljs-keyword">return</span> <span class="hljs-literal">undefined</span>;
 }
 
-exports.getValue = getValue;</pre></div>
+exports.getValue = getValue;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>lookup</code> function returns the index of the identifier in the symbol table if it exists, and returns <code>undefined</code> otherwise.</p>
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>The <code>lookup</code> function returns the index of the identifier in the symbol table if it exists, and returns <code>undefined</code> otherwise.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> lookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> lookup = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ID,ALL</span>)
 </span>{
   <span class="hljs-keyword">if</span> (isEmpty(ALL.ST))
   {
@@ -478,79 +729,134 @@ exports.lookup = lookup;
 }
 
 exports.isEmpty = isEmpty;
-},{}],<span class="hljs-number">4</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
+},{}],<span class="hljs-number">4</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div></div>
+            
+        </li>
         
-      
         
-        <h4 id="stage-2-tokenization">STAGE 2: TOKENIZATION</h4>
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <h4 id="stage-2-tokenization">STAGE 2: TOKENIZATION</h4>
 <p>Tokenization serves as an intermediate step of compilation in order to make parsing simpler. In this process, the raw input code is split into an array. The array contents
 are assigned tokens according to the grammar rules and this will make it easier for the parser to check patterns later.</p>
 
-        
-          <div class='highlight'><pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
 <span class="hljs-keyword">var</span> GRAMMAR = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./1_grammar'</span>);
-<span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);</pre></div>
+<span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>tokenize</code> function takes an array of strings as input and returns the state of the system.
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>The <code>tokenize</code> function takes an array of strings as input and returns the state of the system.
 This function scans every word in the <code>CODE</code> string and determines the appropriate token to represent it. The meaning behind the program is not meant to be
 interpreted at this point. Instead, individual words (strings) are checked to see if they are a member of the grammar.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>Since this is the first compilation stage after I/O, the symbol table, tokenized code and error are initialized here.</p>
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Since this is the first compilation stage after I/O, the symbol table, tokenized code and error are initialized here.</p>
 
-        
-          <div class='highlight'><pre>exports.tokenize = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">CODE</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>exports.tokenize = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">CODE</span>)
 </span>{
   <span class="hljs-keyword">var</span> ALL = {<span class="hljs-string">"T"</span>:[],<span class="hljs-string">"W"</span>:[],<span class="hljs-string">"ST"</span>:{},<span class="hljs-string">"E"</span>:<span class="hljs-string">""</span>};
 
-  <span class="hljs-keyword">var</span> TOKENS = GRAMMAR.LEX;</pre></div>
+  <span class="hljs-keyword">var</span> TOKENS = GRAMMAR.LEX;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>When <code>tokenize</code> is invoked, CODE contains a string so it needs to be split by whitespace to form <code>WORDS</code>, which is an array.</p>
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>When <code>tokenize</code> is invoked, CODE contains a string so it needs to be split by whitespace to form <code>WORDS</code>, which is an array.</p>
 
-        
-          <div class='highlight'><pre>  CODE = CODE.replace(<span class="hljs-regexp">/(\r\n|\n|\r|\t)/gm</span>,<span class="hljs-string">" "</span>);
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  CODE = CODE.replace(<span class="hljs-regexp">/(\r\n|\n|\r|\t)/gm</span>,<span class="hljs-string">" "</span>);
   <span class="hljs-keyword">var</span> WORDS = CODE.split(<span class="hljs-regexp">/ +/</span>);
 
-  ALL.W = WORDS;</pre></div>
+  ALL.W = WORDS;</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The regular expressions which are in the hash table <code>TOKENS</code> are tested against each element of <code>WORD</code> to determine which token fits best.</p>
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>The regular expressions which are in the hash table <code>TOKENS</code> are tested against each element of <code>WORD</code> to determine which token fits best.</p>
 
-        
-          <div class='highlight'><pre>  <span class="hljs-built_in">console</span>.log(ALL.W)
-  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; ALL.W.length; i ++) 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; ALL.W.length; i ++) 
   {
     <span class="hljs-built_in">console</span>.log(ALL.W.length);
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> TOKENS)
     {
       <span class="hljs-keyword">var</span> re = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(TOKENS[key]);
       <span class="hljs-keyword">if</span> (re.exec(ALL.W[i]) != <span class="hljs-literal">null</span>)
-      {</pre></div>
+      {</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The application crashes if the word is not found in the hash table at all so the token <code>UNDEFINED</code> is assigned to those which do not fit anywhere else and an error is thrown.</p>
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>The application crashes if the word is not found in the hash table at all so the token <code>UNDEFINED</code> is assigned to those which do not fit anywhere else and an error is thrown.</p>
 
-        
-          <div class='highlight'><pre>        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'UNDEFINED'</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'UNDEFINED'</span>)
         {
           ALL.E = <span class="hljs-string">"ERROR: '"</span> + ALL.W[i] + <span class="hljs-string">"' is unrecognized "</span>;
           <span class="hljs-keyword">return</span> ALL;
-        }</pre></div>
+        }</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>If the word is an identifier or is the program’s name, it needs to be recorded in the symbol table.</p>
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>If the word is an identifier or is the program’s name, it needs to be recorded in the symbol table.</p>
 
-        
-          <div class='highlight'><pre>        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'PROGRAM'</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (key == <span class="hljs-string">'PROGRAM'</span>)
         {
           sym = <span class="hljs-keyword">new</span> SYM.SYMBOL(<span class="hljs-string">'PROGRAM'</span>,<span class="hljs-string">'PROGNAME'</span>,ALL.W[i]);
           ALL = SYM.insert(sym,ALL);
@@ -560,26 +866,55 @@ interpreted at this point. Instead, individual words (strings) are checked to se
           sym = <span class="hljs-keyword">new</span> SYM.SYMBOL(<span class="hljs-literal">undefined</span>,ALL.W[i],<span class="hljs-literal">undefined</span>);
           ALL = SYM.insert(sym,ALL);
         }
+        
         ALL.T[i] = key;
-        <span class="hljs-built_in">console</span>.log(ALL.T);
-        <span class="hljs-keyword">break</span>;
-      }
+        <span class="hljs-built_in">console</span>.log(ALL.T);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>break;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      }
     }
-  }</pre></div>
+  }</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>After scanning the code for tokens, the tokenized code and words arrays, symbol table hash, and the <code>ERROR</code> string are returned to the
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>After scanning the code for tokens, the tokenized code and words arrays, symbol table hash, and the <code>ERROR</code> string are returned to the
 parse function for further processing.</p>
 
-        
-          <div class='highlight'><pre>  <span class="hljs-keyword">return</span> ALL;
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> ALL;
 }
-},{<span class="hljs-string">"./1_grammar"</span>:<span class="hljs-number">2</span>,<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>}],<span class="hljs-number">5</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
+},{<span class="hljs-string">"./1_grammar"</span>:<span class="hljs-number">2</span>,<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>}],<span class="hljs-number">5</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div></div>
+            
+        </li>
         
-      
         
-        <h4 id="stage-3-parsing">STAGE 3: PARSING</h4>
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <h4 id="stage-3-parsing">STAGE 3: PARSING</h4>
 <p>After tokenizing, the parser performs a few checks in order to verify that the source code is syntactically correct and is ready for code generation.
 Since the grammar is left-recursive, the more commonly used recursive descent parsing method is not used here. Moreover, due to JavaScript stack call limits,
 the initially planned one-pass parsing is not implemented here. Instead, there are 3 main functions executed within the main <code>parse</code> sequence</p>
@@ -589,55 +924,96 @@ the initially planned one-pass parsing is not implemented here. Instead, there a
 <li><code>typeCheck</code></li>
 </ul>
 
-        
-          <div class='highlight'><pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
 <span class="hljs-keyword">var</span> GRAMMAR = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./1_grammar'</span>);
 <span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);
 <span class="hljs-keyword">var</span> TOKENIZER = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./3_tokenizer'</span>);
 
 exports.parse = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">CODE</span>) 
 </span>{ 
-  ALL = TOKENIZER.tokenize(CODE);</pre></div>
+  ALL = TOKENIZER.tokenize(CODE);</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>If an error is detected at any parsing stage, compilation is aborted. The <code>ALL.E</code> value contains the error string and is empty if there are no errors.</p>
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>If an error is detected at any parsing stage, compilation is aborted. The <code>ALL.E</code> value contains the error string and is empty if there are no errors.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The <code>checkSyntax</code> checks if the source code tokens satisfy MICAELang’s grammar rules.
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>The <code>checkSyntax</code> checks if the source code tokens satisfy MICAELang’s grammar rules.
 Aside from the error string, the <code>checkSyntax</code> call also checks if the MICAELang starting header is included. Otherwise, an error is returned.</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  ALL = ALL.T[<span class="hljs-number">0</span>] == <span class="hljs-string">'START'</span> &amp;&amp; ALL.T.length &gt;= <span class="hljs-number">2</span> &amp;&amp; ALL.E == <span class="hljs-string">""</span> ? checkSyntax(<span class="hljs-number">1</span>,ALL) 
+      : {<span class="hljs-string">"T"</span> : ALL.T, <span class="hljs-string">"W"</span> : ALL.W, <span class="hljs-string">"ST"</span> : ALL.ST, <span class="hljs-string">"E"</span> : <span class="hljs-string">"ERROR: Program entry point not found"</span>};</pre></div></div>
+            
+        </li>
         
-          <div class='highlight'><pre>  ALL = ALL.T[<span class="hljs-number">0</span>] == <span class="hljs-string">'START'</span> &amp;&amp; ALL.T.length &gt;= <span class="hljs-number">2</span> &amp;&amp; ALL.E == <span class="hljs-string">""</span> ? checkSyntax(<span class="hljs-number">1</span>,ALL) 
-      : {<span class="hljs-string">"T"</span> : ALL.T, <span class="hljs-string">"W"</span> : ALL.W, <span class="hljs-string">"ST"</span> : ALL.ST, <span class="hljs-string">"E"</span> : <span class="hljs-string">"ERROR: Program entry point not found"</span>};</pre></div>
         
-      
-        
-        <p>Mathematical expressions are simplified here as much as possible and their values are stored in the symbol table.
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Mathematical expressions are simplified here as much as possible and their values are stored in the symbol table.
 Similar to the previous check, <code>simplifyExpressions</code> only runs if there is no error. Otherwise, it does nothing, which causes the error to propagate 
 to the main compilation sequence and abort the process.</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  ALL = ALL.E == <span class="hljs-string">""</span> ? simplifyExpressions(ALL) : ALL;</pre></div></div>
+            
+        </li>
         
-          <div class='highlight'><pre>  ALL = ALL.E == <span class="hljs-string">""</span> ? simplifyExpressions(ALL) : ALL;</pre></div>
         
-      
-        
-        <p>The tokens, source code, symbol table and error are returned back to the compiler module. But really, the arguably most important effect of this module is
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>The tokens, source code, symbol table and error are returned back to the compiler module. But really, the arguably most important effect of this module is
 the populated symbol table.</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> ALL;
+}</pre></div></div>
+            
+        </li>
         
-          <div class='highlight'><pre>  <span class="hljs-keyword">return</span> ALL;
-}</pre></div>
         
-      
-        
-        <p>The <code>checkSyntax</code> function recursively checks the next token to see if the productions in the form of <code>[CURRENT,NEXT]</code> are accepted by the grammar.
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>The <code>checkSyntax</code> function recursively checks the next token to see if the productions in the form of <code>[CURRENT,NEXT]</code> are accepted by the grammar.
 It returns the state of the system upon completion. <code>ALL.E</code> would contain an error string if an illegal token is found.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> checkSyntax = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n,ALL</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> checkSyntax = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n,ALL</span>)
 </span>{
   <span class="hljs-keyword">if</span> (n == ALL.T.length || ALL.E != <span class="hljs-string">""</span>)
   {
@@ -659,15 +1035,23 @@ It returns the state of the system upon completion. <code>ALL.E</code> would con
     }
   }
   <span class="hljs-keyword">return</span> ALL;
-}</pre></div>
+}</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>simplifyExpressions</code> function looks for assignment statements involving Mathematical operations. It simplifies by processing constants
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>The <code>simplifyExpressions</code> function looks for assignment statements involving Mathematical operations. It simplifies by processing constants
 and storing the result in the symbol table.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> simplifyExpressions = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ALL</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> simplifyExpressions = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ALL</span>)
 </span>{
   G = GRAMMAR.RULES;
   o = <span class="hljs-number">0</span>; n = <span class="hljs-number">0</span>;
@@ -704,15 +1088,23 @@ and storing the result in the symbol table.</p>
     cur = ALL.T[n]; 
   }
   <span class="hljs-keyword">return</span> ALL;
-}</pre></div>
+}</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>Given that unlimited number of operands are allowed in MICAELang, the type is checked before the data is passed on to the <code>apply</code> function for evaluation.
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>Given that unlimited number of operands are allowed in MICAELang, the type is checked before the data is passed on to the <code>apply</code> function for evaluation.
 The <code>typeCheck</code> function returns true if all operands are of same types and false if they are not.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> typeCheck = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">OPERANDS</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> typeCheck = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">OPERANDS</span>)
 </span>{
   l = OPERANDS.length;
   <span class="hljs-keyword">if</span> (l &gt; <span class="hljs-number">0</span>)
@@ -727,16 +1119,24 @@ The <code>typeCheck</code> function returns true if all operands are of same typ
     }
   }
   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-}</pre></div>
+}</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>The <code>apply</code> function indirectly uses the principle of currying. The input is an operator and its list of operands. The function iterates through the
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>The <code>apply</code> function indirectly uses the principle of currying. The input is an operator and its list of operands. The function iterates through the
 list until it reaches the end, and then computes the result. This is indirect currying because while intermediate values are not computed, the traversal
 and formation of the evaluated string is similar to what happens in the method.</p>
 
-        
-          <div class='highlight'><pre><span class="hljs-keyword">var</span> apply = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">OP,OPERANDS</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> apply = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">OP,OPERANDS</span>)
 </span>{
   n = <span class="hljs-number">0</span>;
   str = <span class="hljs-string">""</span>;
@@ -748,33 +1148,65 @@ and formation of the evaluated string is similar to what happens in the method.<
   }
   
   <span class="hljs-keyword">return</span> <span class="hljs-built_in">eval</span>(str);
-}</pre></div>
+}</pre></div></div>
+            
+        </li>
         
-      
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>},{<span class="hljs-string">"./1_grammar"</span>:<span class="hljs-number">2</span>,<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./3_tokenizer"</span>:<span class="hljs-number">4</span>}],<span class="hljs-number">6</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div></div>
+            
+        </li>
         
         
-        
-          <div class='highlight'><pre>},{<span class="hljs-string">"./1_grammar"</span>:<span class="hljs-number">2</span>,<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./3_tokenizer"</span>:<span class="hljs-number">4</span>}],<span class="hljs-number">6</span>:[<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require,module,exports</span>)</span>{</pre></div>
-        
-      
-        
-        <h4 id="stage-4-code-generation">STAGE 4: CODE GENERATION</h4>
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <h4 id="stage-4-code-generation">STAGE 4: CODE GENERATION</h4>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The last layer of compilation is code generation where symbol table values are substituted into expressions and function applications.
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>The last layer of compilation is code generation where symbol table values are substituted into expressions and function applications.
 This module is simple because the grammar only has assignments, arithmetic operations and print statements. Moreover, most arithmetic
 expressions are simplified in the parsing phase.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The <code>generate</code> function iterates through the list of tokens and uses <code>eval</code> to interpret the generated JavaScript code. The output is 
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>The <code>generate</code> function iterates through the list of tokens and uses <code>eval</code> to interpret the generated JavaScript code. The output is 
 appended to a string value which is returned to the main compile module as program output.</p>
 
-        
-          <div class='highlight'><pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
 <span class="hljs-keyword">var</span> SYM = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./2_symbol'</span>);
 <span class="hljs-keyword">var</span> TOKENIZER = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./3_tokenizer'</span>);
 
@@ -786,15 +1218,23 @@ exports.generate = <span class="hljs-function"><span class="hljs-keyword">functi
   err = <span class="hljs-string">""</span>;
 
   <span class="hljs-keyword">while</span>(ALL.T[n] != <span class="hljs-string">'EOF'</span>)
-  {</pre></div>
+  {</pre></div></div>
+            
+        </li>
         
-      
         
-        <p>MICAELang’s print statement can only print strings so an error is thrown if a number or boolean value is passed in. If the argument to <code>!!!</code> (print)
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>MICAELang’s print statement can only print strings so an error is thrown if a number or boolean value is passed in. If the argument to <code>!!!</code> (print)
 is an identifier, the symbol table is looked up to find the value.</p>
 
-        
-          <div class='highlight'><pre>    <span class="hljs-keyword">if</span>(ALL.T[n] == <span class="hljs-string">'PRINT'</span>)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(ALL.T[n] == <span class="hljs-string">'PRINT'</span>)
     {
       t = n + <span class="hljs-number">1</span>; 
       <span class="hljs-keyword">if</span>(ALL.T[t] == <span class="hljs-string">'STRING'</span> || (ALL.T[t] == <span class="hljs-string">'IDENTIFIER'</span> &amp;&amp; SYM.getTYPE(ALL.W,ALL.ST) == <span class="hljs-string">'STRING'</span>))
@@ -813,11 +1253,18 @@ is an identifier, the symbol table is looked up to find the value.</p>
   JS = <span class="hljs-string">"\"hello\""</span>;
   <span class="hljs-keyword">return</span> {<span class="hljs-string">"JS"</span>:JS, <span class="hljs-string">"E"</span>:err};
 }
-},{<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./3_tokenizer"</span>:<span class="hljs-number">4</span>}]},{},[<span class="hljs-number">1</span>]);</pre></div>
+},{<span class="hljs-string">"./2_symbol"</span>:<span class="hljs-number">3</span>,<span class="hljs-string">"./3_tokenizer"</span>:<span class="hljs-number">4</span>}]},{},[<span class="hljs-number">1</span>]);</pre></div></div>
+            
+        </li>
         
-      
         
-        <h3 id="testing">Testing</h3>
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <h3 id="testing">Testing</h3>
 <p>The MICAELang project was tested using white-box unit tests. Each module builds on top of previous ones so each one was verified incrementally before moving on to write the next
 module. Since there are no testing frameworks currently available for this language (MICAELang), testing was done manually by writing snippets of code and compiling
 to see the output. Each one of these units were tested:</p>
@@ -827,71 +1274,167 @@ to see the output. Each one of these units were tested:</p>
 <li>Code Generator</li>
 </ul>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The details of testing each module are available in the Appendix section of this paper.</p>
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>The details of testing each module are available in the Appendix section of this paper.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h3 id="conclusion-evaluation-and-further-work">Conclusion, Evaluation and Further Work</h3>
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <h3 id="conclusion-evaluation-and-further-work">Conclusion, Evaluation and Further Work</h3>
 <p>In conclusion, this application proves that emojis and symbols can be defined in a grammar for programming purposes. Also, it shows that 
 programs can be compiled using JavaScript in the browser.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The tests that were run were successful and helpful in ensuring that the the MICAELang compiler works. There were no other problems, except for the
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>The tests that were run were successful and helpful in ensuring that the the MICAELang compiler works. There were no other problems, except for the
 fact that it took longer to realize what was essential to the project so plenty of time was wasted weeding out unnecessary parts and restarting.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>In the future, other constructs of the MICAELang language should be implemented in the parse module so that they can be interpreted as well. Moreover, more complicated
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>In the future, other constructs of the MICAELang language should be implemented in the parse module so that they can be interpreted as well. Moreover, more complicated
 programming concepts such as loops and user-defined functions can be added to the grammar.</p>
 <p><div style="page-break-after: always;"></div></p>
 <h3 id="references">REFERENCES</h3>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>[1] Browserify. [<a href="http://browserify.org">http://browserify.org</a>], March 2016.  </p>
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>[1] Browserify. [<a href="http://browserify.org">http://browserify.org</a>], March 2016.  </p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>[2] Docco. [<a href="https://jashkenas.github.io/docco">https://jashkenas.github.io/docco</a>], March 2016.</p>
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>[2] Docco. [<a href="https://jashkenas.github.io/docco">https://jashkenas.github.io/docco</a>], March 2016.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>[3] FAQ. Emojipedia. [<a href="http://emojipedia.org/faq">http://emojipedia.org/faq</a>], March 2016.  </p>
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p>[3] FAQ. Emojipedia. [<a href="http://emojipedia.org/faq">http://emojipedia.org/faq</a>], March 2016.  </p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>[4] Graham, Scott. Skulpt. [<a href="http://www.skulpt.org">http://www.skulpt.org</a>], April 2016.  </p>
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <p>[4] Graham, Scott. Skulpt. [<a href="http://www.skulpt.org">http://www.skulpt.org</a>], April 2016.  </p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>[5] JavaScript For Cats. [<a href="http://jsforcats.com">http://jsforcats.com</a>], March 2016.  </p>
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p>[5] JavaScript For Cats. [<a href="http://jsforcats.com">http://jsforcats.com</a>], March 2016.  </p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>[6] What is Ideone. [<a href="https://ideone.com/">https://ideone.com/</a>], March 2016. </p>
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <p>[6] What is Ideone. [<a href="https://ideone.com/">https://ideone.com/</a>], March 2016. </p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>[7] What is Alice?. Alice. [<a href="http://www.alice.org/index.php?page=what_is_alice/what_is_alice">http://www.alice.org/index.php?page=what_is_alice/what_is_alice</a>], March 2016.</p>
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <p>[7] What is Alice?. Alice. [<a href="http://www.alice.org/index.php?page=what_is_alice/what_is_alice">http://www.alice.org/index.php?page=what_is_alice/what_is_alice</a>], March 2016.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p><div style="page-break-after: always;"></div></p>
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <p><div style="page-break-after: always;"></div></p>
 <h3 id="appendix">APPENDIX</h3>
 <h4 id="-testing-tokenizer-"><em>Testing: Tokenizer</em></h4>
 <p>To test the tokenizer, a MICAELang script containing all possible members of the grammar is used as input. The following code was used as input and did not register
@@ -904,23 +1447,47 @@ any errors.</p>
 At this stage of testing, the parser and codegen functions had not been written so the focus was on verifying that the resulting tokens produced from this source code
 was accurate. The verification was done by manually checking if each one is correct.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>To check if the tokenizer throws the right errors, deliberate syntax errors such as unterminated strings, comments and random symbols were used in the input. Errors were
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <p>To check if the tokenizer throws the right errors, deliberate syntax errors such as unterminated strings, comments and random symbols were used in the input. Errors were
 reported as expected.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h4 id="-testing-parser-"><em>Testing: Parser</em></h4>
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <h4 id="-testing-parser-"><em>Testing: Parser</em></h4>
 <p>The parser testing checks whether the structure of the source code complies with the specification given by the MICAELang grammar. The parse module has three stages of
 syntax, type and expression checking, and each one was tested separately.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The first test case was a minimal working MICAELang parse which was tested for structural/grammatical correctness. Here, it is verified that input words satisfy the order
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <p>The first test case was a minimal working MICAELang parse which was tested for structural/grammatical correctness. Here, it is verified that input words satisfy the order
 specified by the grammar. The following code snippet is a minimal MICAELang program which does not really do anything because it exits right after the program entry.</p>
 <p><pre><code>
 :D Hello 
@@ -929,10 +1496,18 @@ specified by the grammar. The following code snippet is a minimal MICAELang prog
 As expected, the parser did not throw any errors here. To further the parser testing, random text and deliberate grammatical errors were inserted into the input. The
 parser threw the appropriate errors.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The second test was designed to verify that type-checking works. In assignment statements, the operands all need to be of the same type before they are
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>The second test was designed to verify that type-checking works. In assignment statements, the operands all need to be of the same type before they are
 evaluated. The following program was used to check types.</p>
 <p><pre><code>
 :D Hello ~
@@ -942,10 +1517,18 @@ i = + 1 1 1 1
 This program did not result in an error. However, if, for example one of the <code>1</code>‘s is replaced with a string, compilation fails because it is not the
 same type as the other operands.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The last test incorporated expressions into the source code. In the grammar, expressions can only be used when they are assigned to a variable so the following
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <p>The last test incorporated expressions into the source code. In the grammar, expressions can only be used when they are assigned to a variable so the following
 is a minimal working example.</p>
 <p><pre><code>
 :D Hello ~
@@ -956,10 +1539,18 @@ Two things that were used to verify the expression parsing were the symbol table
 populated with the program name and <code>NUMBER i = 4</code>, and it was. Similar to what was done in the previous tests, deliberate syntax and type errors were introduced into 
 the input, thereby causing parsing errors.</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <h4 id="-testing-code-generator-"><em>Testing: Code Generator</em></h4>
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <h4 id="-testing-code-generator-"><em>Testing: Code Generator</em></h4>
 <p>Testing the code generator is as easy as checking the input and output fields of the application. If the output field produces an expected result, then the
 code generator is functional. The following program is run:</p>
 <p><pre><code>
@@ -971,10 +1562,18 @@ j = “Hello World” ~
 </code></pre>
 This returns the expected output which is “Hello World.”</p>
 
+            </div>
+            
+        </li>
         
-      
         
-        <p>The parser resolves most grammatical errors involving the print statement and literals. Only strings or identifiers containing strings can be used as
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              <p>The parser resolves most grammatical errors involving the print statement and literals. Only strings or identifiers containing strings can be used as
 input to the <code>!!!</code>. However, if the value of an identifier is an integer, it will not be caught by the parser. Thus, the following code produces
 an error when run, as expected.</p>
 <pre><code>
@@ -985,10 +1584,11 @@ j = "Hello World" ~
 :(
 </code></pre>
 
+            </div>
+            
+        </li>
         
-      
-      <div class="fleur">h</div>
-    </div>
+    </ul>
   </div>
 </body>
 </html>
