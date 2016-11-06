@@ -11,4 +11,4 @@
 ./build.sh -d -r
 ```
 
-* Visit <http://localhost:3000/> 
+* Open the index.html page in a browser
